@@ -1,0 +1,116 @@
+/* Reset y ajuste del body */
+html, body, #root, .App {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden; /* Evita scroll */
+}
+
+/* Contenedor principal fijo */
+.home-container {
+  position: fixed; /* Siempre en pantalla */
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  justify-content: flex-start; /* Título arriba */
+  height: 100vh;
+  width: 100vw;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(27,31,59,0.7) 0%, rgba(42,47,90,0.9) 100%), 
+              url("/src/assets/fotos/Fondo Clash Royale.jpeg") center center / cover no-repeat;
+  color: #fff;
+  font-family: "Supercell-Magic", sans-serif;
+  overflow: hidden; /* Evita que contenido sobresalga */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Imagen del título */
+.titulo-imagen {
+  width: 500px;
+  max-width: 90%; /* Ajuste para pantallas pequeñas */
+  height: auto;
+  display: block;
+  margin: 0 auto; /* centrado horizontal */
+  animation: bounceIn 1s ease forwards;
+}
+
+/* Contenedor de botones centrado vertical y horizontalmente */
+.home-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-grow: 1; /* Ocupa el espacio disponible */
+}
+
+/* Animaciones */
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeUp {
+  0% {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Botones */
+.home-button {
+  background-color: #004aad;
+  border: 3px solid #ffd700;
+  color: white;
+  padding: 0.8rem 2.5rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+  box-shadow: 0 4px 0 #002d72;
+  min-width: 220px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards;
+}
+
+.home-button.game {
+  background-color: #0066cc;
+  animation-delay: 0.6s;
+}
+
+.home-button.collection {
+  background-color: #00509e;
+  animation-delay: 1s;
+}
+
+.home-button:hover {
+  transform: translateY(-3px);
+  background-color: #006eff;
+  box-shadow: 0 6px 0 #003e99;
+}
+
+.home-button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #002d72;
+}
