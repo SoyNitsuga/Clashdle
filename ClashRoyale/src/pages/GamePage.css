@@ -1,206 +1,304 @@
-.game-container { 
+/* --- RESET Y AJUSTES GLOBALES --- */
+html, body, #root, .App {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: auto; /* Permite scroll cuando se excede la altura */
+}
+
+/* --- CONTENEDOR PRINCIPAL --- */
+.game-container {
+  position: relative; /* No fixed */
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(180deg, rgba(27,31,59,0.8), rgba(42,47,90,0.95)),
-              url("/src/assets/fotos/Fondo Clash Royale.jpeg") center/cover no-repeat;
-  color: white;
+  justify-content: flex-start;
+  min-height: 100vh; /* Ocupa al menos toda la pantalla */
+  width: 100%;
+  background: linear-gradient(180deg, rgba(27,31,59,0.7) 0%, rgba(42,47,90,0.9) 100%),
+              url("/src/assets/fotos/Fondo Clash Royale.jpeg") center center / cover no-repeat;
+  color: #ffee00;
   font-family: "Supercell-Magic", sans-serif;
-  min-height: 100vh;
-  max-height: 100vh;
-  padding-top: 20px;
-  padding-bottom: 10rem;
-  overflow-y: auto;
-} 
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+  /* overflow: hidden; */ /* quitamos para scroll general */
+}
 
+/* --- IMAGEN DEL TÍTULO --- */
 .titulo-imagen {
-  width: 350px;
+  width: 500px;
+  max-width: 90%;
+  height: auto;
+  display: block;
+  margin: 0 auto 10px auto;
+  animation: bounceIn 1s ease forwards;
   cursor: pointer;
-  margin-bottom: 20px;
 }
 
+/* --- TÍTULO PRINCIPAL --- */
 .game-title {
-  font-size: 1.8rem;
-  color: #ffd700;
-  text-shadow: 2px 2px 0 #000;
-  margin-bottom: 20px;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 6px #000;
 }
 
+/* --- SECCIÓN DE INPUT --- */
 .input-section {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 30px;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .input-section input {
   padding: 0.6rem 1rem;
-  font-size: 1.1rem;
-  border: 3px solid #ffd700;
   border-radius: 10px;
-  width: 260px;
-  background-color: rgba(0, 0, 0, 0.3);
-  color: white;
+  border: 3px solid #ffd700;
+  font-size: 1rem;
+  outline: none;
+  width: 250px;
 }
 
 .input-section button {
   background-color: #0066cc;
   border: 3px solid #ffd700;
-  color: white;
+  color: rgb(255, 255, 255);
+  font-weight: bold;
   padding: 0.6rem 1rem;
   border-radius: 10px;
-  font-size: 1.2rem;
   cursor: pointer;
-  font-weight: bold;
+  transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
-.victory-box {
-  background-color: #ffd700;
-  color: #000;
-  padding: 20px;
-  border-radius: 15px;
-  text-align: center;
-  margin-bottom: 20px;
-  border: 3px solid #222;
-  animation: fadeScaleIn 0.8s ease forwards;
+.input-section button:hover {
+  transform: scale(1.1);
+  background-color: #007bff;
 }
 
-@keyframes fadeScaleIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.3) translateY(-50px);
-  }
-  60% {
-    opacity: 1;
-    transform: scale(1.1) translateY(10px);
-  }
-  80% {
-    transform: scale(0.95) translateY(0);
-  }
-  100% {
-    transform: scale(1) translateY(0);
-  }
-}
-
-.victory-box img {
-  width: 80px;
-  height: 90px;
-  border-radius: 10px;
-  margin: 10px 0;
-}
-
-/* Tabla real */
-.tabla-intentos {
-  display: table;
-  width: 95%;
-  max-width: 900px;
-  border-spacing: 6px;
-}
-
-/* Fila */
-.fila {
-  display: table-row;
-}
-
-/* Celda */
-.celda {
-  display: table-cell;
-  padding: 10px;
-  min-height: 70px;
-  border-radius: 8px;
-  border: 2px solid #222;
-  font-weight: bold;
-  text-align: center;
-  vertical-align: middle;
-  background-color: rgba(0,0,0,0.3);
-  color: white;
-}
-
-/* Encabezado */
-.encabezado .celda {
-  background-color: #444;
-  color: #ffd700;
-}
-
-/* Centrar la palabra "Carta" en el encabezado */
-.encabezado .carta {
-  justify-content: center;
-  display: flex;
-  align-items: center;
-}
-
-/* Columna carta */
-.carta {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* Imagen de carta */
-.card-img {
-  width: 50px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 5px;
-}
-
-.card-name {
-  font-weight: bold;
-  color: #ffd700;
-}
-
-/* Colores de coincidencia */
-.match {
-  background-color: #00a000;
-}
-
-.no-match {
-  background-color: #a00000;
-}
-
-.fila .celda:nth-child(3),
-.fila .celda:nth-child(4),
-.fila .celda:nth-child(5),
-.fila .celda:nth-child(8),
-.encabezado .celda:nth-child(3),
-.encabezado .celda:nth-child(4),
-.encabezado .celda:nth-child(5),
-.encabezado .celda:nth-child(8) {
-  min-width: 90px;
-}
-
-
+/* --- SUGERENCIAS --- */
 .sugerencias-box {
-  background-color: rgba(0,0,0,0.7);
-  border: 2px solid #ffd700;
-  border-radius: 8px;
-  margin-top: -10px;
-  margin-bottom: 20px;
-  width: 260px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid gold;
+  border-radius: 10px;
+  width: 300px;
   max-height: 200px;
   overflow-y: auto;
-  color: #ffd700;
-  font-weight: bold;
+  margin-top: 0.5rem;
+  animation: fadeIn 0.3s ease;
 }
 
 .sugerencia-item {
+  padding: 0.5rem;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 10px;
-  padding: 5px 10px;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .sugerencia-item:hover,
 .sugerencia-item.selected {
-  background-color: #0066cc;
-  color: white;
-  border-radius: 5px;
+  background-color: rgba(29, 101, 235, 0.425);
 }
 
 .sugerencia-img {
-  width: 30px;
-  height: 40px;
-  object-fit: cover;
+  width: 35px;
+  height: auto;
   border-radius: 5px;
+}
+
+/* --- TABLA DE INTENTOS --- */
+.tabla-intentos {
+  margin-top: 1.5rem;
+  width: 95%;
+  max-width: 1000px;
+  border-collapse: separate;
+  border-spacing: 0 6px; /* Espacio entre filas */
+}
+
+/* FILAS */
+.fila {
+  display: grid;
+  grid-template-columns: 1.5fr repeat(7, 1fr); /* columnas: carta + 7 características */
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+  border-radius: 12px;
+  padding: 0.4rem 0.6rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.fila:hover {
+  transform: translateY(-2px);
+  background: rgba(0,0,0,0.65);
+}
+
+/* ENCABEZADO */
+.fila.encabezado {
+  background: linear-gradient(90deg, #1e3a8a, #3b82f6); /* Azul intenso degradado */
+  color: #ffd700; /* Texto dorado */
+  font-weight: bold;
+  text-shadow: 0 0 4px #000; /* Sombra para resaltar el texto */
+  border-radius: 12px;
+  border: 2px solid gold; /* Mantiene el borde dorado */
+}
+
+
+/* CELDAS GENERALES */
+.celda {
+  display: flex;               /* Flex para alinear verticalmente */
+  align-items: center;         /* Centrado vertical */
+  justify-content: center;     /* Centrado horizontal (salvo carta) */
+  padding: 0.5rem;
+  text-align: center;
+  border-right: 1px solid rgba(255,255,255,0.2);
+  font-size: 0.95rem;
+  color: #ffee00;
+  min-height: 50px;            /* Altura uniforme de todas las celdas */
+  box-sizing: border-box;
+}
+
+.celda:last-child {
+  border-right: none;
+}
+
+/* CELDA DE CARTA CON IMAGEN */
+.celda.carta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;  /* Imagen a la izquierda */
+  gap: 10px;
+  padding-left: 10px;           /* Espacio extra a la izquierda */
+}
+
+/* IMAGEN DE CARTA */
+.card-img {
+  width: 45px;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid #ffd700;
+  box-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
+}
+
+/* NOMBRE DE CARTA */
+.card-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* COLORES DE COINCIDENCIA */
+.match {
+  background-color: rgba(0, 200, 0, 0.45);
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.no-match {
+  background-color: rgba(200, 0, 0, 0.35);
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+/* --- BOX DE VICTORIA --- */
+.victory-box {
+  margin-top: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 2px solid gold;
+  border-radius: 15px;
+  padding: 1rem;
+  animation: fadeIn 0.8s ease forwards;
+}
+
+.victory-box img {
+  width: 120px;
+  height: auto;
+  margin: 0.5rem;
+}
+
+/* --- NUEVO BOX DE COFRE Y ESTRELLAS --- */
+.reward-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1.5rem;
+  animation: fadeIn 0.8s ease forwards;
+}
+
+/* Estrellas */
+.estrellas-box {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.estrella-icon {
+  width: 35px;
+  height: auto;
+  filter: drop-shadow(0 0 8px gold);
+  animation: starPop 0.5s ease forwards;
+}
+
+@keyframes starPop {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+/* Cofre animado */
+.cofre-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  animation: cofreBounce 1.5s infinite ease-in-out;
+}
+
+.cofre-container:hover {
+  transform: scale(1.1);
+}
+
+.cofre-img {
+  width: 180px;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 0 10px gold);
+}
+
+/* --- BOX DE RECOMPENSA --- */
+.recompensa-box {
+  margin-top: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  border: 2px solid gold;
+  border-radius: 15px;
+  padding: 1rem;
+  animation: fadeIn 0.8s ease forwards;
+}
+
+.recompensa-box img {
+  width: 100px;
+  height: auto;
+  margin: 0.5rem;
+}
+
+/* --- ANIMACIONES --- */
+@keyframes bounceIn {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.1); opacity: 1; }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+@keyframes cofreBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }

@@ -70,6 +70,28 @@ const cartas: Carta[] = [
     rango: "Cuerpo a cuerpo",
     imagen: "../src/assets/fotos/Golden Knight.png",
   },
+  {
+    nombre: "Tronco",
+    genero: "Ninguno",
+    tipo: "Hechizo",
+    rareza: "Legendaria",
+    elixir: 2,
+    fechaLanzamiento: 2016,
+    arena: "Fosa de Huesos",
+    rango: "A distancia",
+    imagen: "../src/assets/fotos/Tronco.png",
+  },
+  {
+    nombre: "Torre Infernal",
+    genero: "Ninguno",
+    tipo: "Estructura",
+    rareza: "Rara",
+    elixir: 5,
+    fechaLanzamiento: 2016,
+    arena: "Fuerte del P.E.K.K.A",
+    rango: "A distancia",
+    imagen: "../src/assets/fotos/TorreInfernal.png",
+  },
 ];
 
 function normalizarTexto(texto: string) {
@@ -88,6 +110,8 @@ export default function GamePage() {
   const [victoria, setVictoria] = useState(false);
   const [sugerencias, setSugerencias] = useState<Carta[]>([]);
   const [seleccionIndice, setSeleccionIndice] = useState(0);
+  const [cofreEstrellas, setCofreEstrellas] = useState<number | null>(null);
+  const [recompensa, setRecompensa] = useState<Carta | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -100,11 +124,11 @@ export default function GamePage() {
       setSugerencias([]);
       return;
     }
-  
+
     const cartasDisponibles = cartas.filter(
       (c) => !intentos.some((i) => i.nombre === c.nombre)
     );
-  
+
     const coincidencias = cartas.filter((c) => {
       const normalizadoNombre = normalizarTexto(c.nombre);
       const normalizadoInput = normalizarTexto(adivinanza);
@@ -118,10 +142,10 @@ export default function GamePage() {
 
       return (
         normalizadoNombre.includes(normalizadoInput) &&
-        cartasDisponibles.some((d) => d.nombre === c.nombre) 
+        cartasDisponibles.some((d) => d.nombre === c.nombre)
       );
     });
-  
+
     setSugerencias(coincidencias);
     setSeleccionIndice(0);
   }, [adivinanza, intentos]);
@@ -132,27 +156,63 @@ export default function GamePage() {
       (c) => normalizarTexto(c.nombre) === normalizarTexto(texto)
     );
     if (!encontrada || !cartaSecreta) return;
-  
+
     if (intentos.some((c) => c.nombre === encontrada.nombre)) {
       setAdivinanza("");
       setSugerencias([]);
       return;
     }
-  
+
     setIntentos((prev) => [encontrada, ...prev]);
     setAdivinanza("");
     setSugerencias([]);
-  
+
     if (encontrada.nombre === cartaSecreta.nombre) {
       setVictoria(true);
-
       confetti({
         particleCount: 200,
         spread: 70,
         origin: { y: 0.6 },
-        colors: ["#ffd700", "#0066cc", "#00a000", "#ff0000"]
+        colors: ["#ffd700", "#0066cc", "#00a000", "#ff0000"],
       });
+
+      const intentosTotales = intentos.length + 1;
+      let estrellas = 1;
+      if (intentosTotales <= 2) estrellas = 5;
+      else if (intentosTotales <= 4) estrellas = 4;
+      else if (intentosTotales <= 6) estrellas = 3;
+      else if (intentosTotales <= 8) estrellas = 2;
+      setCofreEstrellas(estrellas);
     }
+  }
+
+  function abrirCofre() {
+    if (!cofreEstrellas) return;
+
+    const probabilidades = {
+      Común: 50 - cofreEstrellas * 5,
+      Rara: 30,
+      Épica: 15 + cofreEstrellas * 2,
+      Legendaria: 4 + cofreEstrellas,
+      Campeón: 1 + cofreEstrellas * 0.5,
+    };
+
+    const tirada = Math.random() * 100;
+    let acumulado = 0;
+    let rarezaSeleccionada = "Común";
+
+    for (const [rareza, prob] of Object.entries(probabilidades)) {
+      acumulado += prob;
+      if (tirada <= acumulado) {
+        rarezaSeleccionada = rareza;
+        break;
+      }
+    }
+
+    const posibles = cartas.filter((c) => c.rareza === rarezaSeleccionada);
+    const premio =
+      posibles[Math.floor(Math.random() * posibles.length)] || cartas[0];
+    setRecompensa(premio);
   }
 
   function colorCelda(valor: any, valorSecreto: any) {
@@ -167,7 +227,9 @@ export default function GamePage() {
       setSeleccionIndice((prev) => (prev + 1) % sugerencias.length);
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      setSeleccionIndice((prev) => (prev - 1 + sugerencias.length) % sugerencias.length);
+      setSeleccionIndice(
+        (prev) => (prev - 1 + sugerencias.length) % sugerencias.length
+      );
     } else if (e.key === "Enter") {
       e.preventDefault();
       manejarAdivinanza(sugerencias[seleccionIndice].nombre);
@@ -200,13 +262,14 @@ export default function GamePage() {
         </button>
       </div>
 
-      {}
       {sugerencias.length > 0 && !victoria && (
         <div className="sugerencias-box">
           {sugerencias.map((c, i) => (
             <div
               key={i}
-              className={`sugerencia-item ${i === seleccionIndice ? "selected" : ""}`}
+              className={`sugerencia-item ${
+                i === seleccionIndice ? "selected" : ""
+              }`}
               onClick={() => manejarAdivinanza(c.nombre)}
             >
               <img src={c.imagen} alt={c.nombre} className="sugerencia-img" />
@@ -216,6 +279,7 @@ export default function GamePage() {
         </div>
       )}
 
+      {/* --- BOX DE VICTORIA --- */}
       {victoria && cartaSecreta && (
         <div className="victory-box">
           <h2>¡Adivinaste!</h2>
@@ -224,7 +288,41 @@ export default function GamePage() {
         </div>
       )}
 
-      {}
+      {/* --- BOX DEL COFRE Y RECOMPENSA --- */}
+      {victoria && cofreEstrellas && !recompensa && (
+        <div className="reward-box">
+          <div className="estrellas-box">
+            {Array.from({ length: cofreEstrellas }).map((_, i) => (
+              <img
+                key={i}
+                src="../src/assets/fotos/Estrellas.png"
+                alt="Estrella"
+                className="estrella-icon"
+              />
+            ))}
+          </div>
+
+          <div className="cofre-container" onClick={abrirCofre}>
+            <img
+              src="../src/assets/fotos/Cofre.png"
+              alt="Cofre"
+              className="cofre-img"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* --- BOX DE RECOMPENSA OBTENIDA --- */}
+      {recompensa && (
+        <div className="recompensa-box">
+          <h3>🎉 ¡Obtuviste una nueva carta!</h3>
+          <img src={recompensa.imagen} alt={recompensa.nombre} />
+          <p>
+            <b>{recompensa.nombre}</b> ({recompensa.rareza})
+          </p>
+        </div>
+      )}
+
       <div className="tabla-intentos">
         <div className="fila encabezado">
           <div className="celda carta">Carta</div>
@@ -243,16 +341,33 @@ export default function GamePage() {
               <img src={carta.imagen} alt={carta.nombre} className="card-img" />
               <span className="card-name">{carta.nombre}</span>
             </div>
-            <div className={`celda ${colorCelda(carta.genero, cartaSecreta?.genero)}`}>
+            <div
+              className={`celda ${colorCelda(
+                carta.genero,
+                cartaSecreta?.genero
+              )}`}
+            >
               {carta.genero}
             </div>
-            <div className={`celda ${colorCelda(carta.tipo, cartaSecreta?.tipo)}`}>
+            <div
+              className={`celda ${colorCelda(carta.tipo, cartaSecreta?.tipo)}`}
+            >
               {carta.tipo}
             </div>
-            <div className={`celda ${colorCelda(carta.rareza, cartaSecreta?.rareza)}`}>
+            <div
+              className={`celda ${colorCelda(
+                carta.rareza,
+                cartaSecreta?.rareza
+              )}`}
+            >
               {carta.rareza}
             </div>
-            <div className={`celda ${colorCelda(carta.elixir, cartaSecreta?.elixir)}`}>
+            <div
+              className={`celda ${colorCelda(
+                carta.elixir,
+                cartaSecreta?.elixir
+              )}`}
+            >
               {carta.elixir}
             </div>
             <div
@@ -263,15 +378,24 @@ export default function GamePage() {
             >
               {carta.fechaLanzamiento}
             </div>
-            <div className={`celda ${colorCelda(carta.arena, cartaSecreta?.arena)}`}>
+            <div
+              className={`celda ${colorCelda(
+                carta.arena,
+                cartaSecreta?.arena
+              )}`}
+            >
               {carta.arena}
             </div>
-            <div className={`celda ${colorCelda(carta.rango, cartaSecreta?.rango)}`}>
+            <div
+              className={`celda ${colorCelda(
+                carta.rango,
+                cartaSecreta?.rango
+              )}`}
+            >
               {carta.rango}
             </div>
           </div>
         ))}
-        <div style={{ height: "150px" }}></div> {}
       </div>
     </div>
   );

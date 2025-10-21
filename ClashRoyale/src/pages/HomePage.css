@@ -87,11 +87,11 @@ html, body, #root, .App {
   font-weight: bold;
   border-radius: 10px;
   cursor: pointer;
-  transition: all 0.25s ease-in-out;
   box-shadow: 0 4px 0 #002d72;
   min-width: 220px;
   opacity: 0;
   animation: fadeUp 0.8s ease forwards;
+  transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 .home-button.game {
@@ -105,10 +105,11 @@ html, body, #root, .App {
 }
 
 .home-button:hover {
-  transform: translateY(-3px);
+  transform: scale(1.1) translateY(-3px);
   background-color: #006eff;
   box-shadow: 0 6px 0 #003e99;
 }
+
 
 .home-button:active {
   transform: translateY(2px);
