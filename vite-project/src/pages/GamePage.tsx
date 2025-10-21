@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import "./GamePage.css";
+import confetti from "canvas-confetti";
 
 interface Carta {
   nombre: string;
@@ -99,36 +100,60 @@ export default function GamePage() {
       setSugerencias([]);
       return;
     }
-    const coincidencias = cartas
-      .filter((c) =>
-        normalizarTexto(c.nombre).includes(normalizarTexto(adivinanza))
-      )
-      .filter((c) => !intentos.some((i) => i.nombre === c.nombre)); // <-- excluye intentos
+  
+    const cartasDisponibles = cartas.filter(
+      (c) => !intentos.some((i) => i.nombre === c.nombre)
+    );
+  
+    const coincidencias = cartas.filter((c) => {
+      const normalizadoNombre = normalizarTexto(c.nombre);
+      const normalizadoInput = normalizarTexto(adivinanza);
+
+      if (
+        cartasDisponibles.length === 1 &&
+        normalizadoNombre.includes(normalizadoInput)
+      ) {
+        return true;
+      }
+
+      return (
+        normalizadoNombre.includes(normalizadoInput) &&
+        cartasDisponibles.some((d) => d.nombre === c.nombre) 
+      );
+    });
+  
     setSugerencias(coincidencias);
     setSeleccionIndice(0);
-  }, [adivinanza, intentos]);  
+  }, [adivinanza, intentos]);
 
-function manejarAdivinanza(nombre?: string) {
-  const texto = nombre ?? adivinanza;
-  const encontrada = cartas.find(
-    (c) => normalizarTexto(c.nombre) === normalizarTexto(texto)
-  );
-  if (!encontrada || !cartaSecreta) return;
-
-  if (intentos.some((c) => c.nombre === encontrada.nombre)) {
+  function manejarAdivinanza(nombre?: string) {
+    const texto = nombre ?? adivinanza;
+    const encontrada = cartas.find(
+      (c) => normalizarTexto(c.nombre) === normalizarTexto(texto)
+    );
+    if (!encontrada || !cartaSecreta) return;
+  
+    if (intentos.some((c) => c.nombre === encontrada.nombre)) {
+      setAdivinanza("");
+      setSugerencias([]);
+      return;
+    }
+  
+    setIntentos((prev) => [encontrada, ...prev]);
     setAdivinanza("");
     setSugerencias([]);
-    return;
-  }
+  
+    if (encontrada.nombre === cartaSecreta.nombre) {
+      setVictoria(true);
 
-  setIntentos((prev) => [encontrada, ...prev]);
-  setAdivinanza("");
-  setSugerencias([]);
-
-  if (encontrada.nombre === cartaSecreta.nombre) {
-    setVictoria(true);
+      confetti({
+        particleCount: 200,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ["#ffd700", "#0066cc", "#00a000", "#ff0000"]
+      });
+    }
   }
-}
 
   function colorCelda(valor: any, valorSecreto: any) {
     return valor === valorSecreto ? "match" : "no-match";
@@ -175,7 +200,7 @@ function manejarAdivinanza(nombre?: string) {
         </button>
       </div>
 
-      {/* Sugerencias con imagen */}
+      {}
       {sugerencias.length > 0 && !victoria && (
         <div className="sugerencias-box">
           {sugerencias.map((c, i) => (
@@ -193,13 +218,13 @@ function manejarAdivinanza(nombre?: string) {
 
       {victoria && cartaSecreta && (
         <div className="victory-box">
-          <h2>🎉 ¡Victoria!</h2>
+          <h2>¡Adivinaste!</h2>
           <img src={cartaSecreta.imagen} alt={cartaSecreta.nombre} />
           <p>{cartaSecreta.nombre}</p>
         </div>
       )}
 
-      {/* Tabla de intentos */}
+      {}
       <div className="tabla-intentos">
         <div className="fila encabezado">
           <div className="celda carta">Carta</div>
@@ -246,6 +271,7 @@ function manejarAdivinanza(nombre?: string) {
             </div>
           </div>
         ))}
+        <div style={{ height: "150px" }}></div> {}
       </div>
     </div>
   );

@@ -9,9 +9,9 @@
   min-height: 100vh;
   max-height: 100vh;
   padding-top: 20px;
-  padding-bottom: 100px;
+  padding-bottom: 10rem;
   overflow-y: auto;
-}
+} 
 
 .titulo-imagen {
   width: 350px;
@@ -62,6 +62,24 @@
   text-align: center;
   margin-bottom: 20px;
   border: 3px solid #222;
+  animation: fadeScaleIn 0.8s ease forwards;
+}
+
+@keyframes fadeScaleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(-50px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.1) translateY(10px);
+  }
+  80% {
+    transform: scale(0.95) translateY(0);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+  }
 }
 
 .victory-box img {
@@ -140,15 +158,17 @@
   background-color: #a00000;
 }
 
-/* Ajustar ancho mínimo de Tipo, Rareza y Elixir */
 .fila .celda:nth-child(3),
 .fila .celda:nth-child(4),
 .fila .celda:nth-child(5),
+.fila .celda:nth-child(8),
 .encabezado .celda:nth-child(3),
 .encabezado .celda:nth-child(4),
-.encabezado .celda:nth-child(5) {
+.encabezado .celda:nth-child(5),
+.encabezado .celda:nth-child(8) {
   min-width: 90px;
 }
+
 
 .sugerencias-box {
   background-color: rgba(0,0,0,0.7);
