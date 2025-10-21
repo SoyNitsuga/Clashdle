@@ -1,0 +1,186 @@
+.game-container { 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(180deg, rgba(27,31,59,0.8), rgba(42,47,90,0.95)),
+              url("/src/assets/fotos/Fondo Clash Royale.jpeg") center/cover no-repeat;
+  color: white;
+  font-family: "Supercell-Magic", sans-serif;
+  min-height: 100vh;
+  max-height: 100vh;
+  padding-top: 20px;
+  padding-bottom: 100px;
+  overflow-y: auto;
+}
+
+.titulo-imagen {
+  width: 350px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.game-title {
+  font-size: 1.8rem;
+  color: #ffd700;
+  text-shadow: 2px 2px 0 #000;
+  margin-bottom: 20px;
+}
+
+.input-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.input-section input {
+  padding: 0.6rem 1rem;
+  font-size: 1.1rem;
+  border: 3px solid #ffd700;
+  border-radius: 10px;
+  width: 260px;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+}
+
+.input-section button {
+  background-color: #0066cc;
+  border: 3px solid #ffd700;
+  color: white;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.victory-box {
+  background-color: #ffd700;
+  color: #000;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  margin-bottom: 20px;
+  border: 3px solid #222;
+}
+
+.victory-box img {
+  width: 80px;
+  height: 90px;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+/* Tabla real */
+.tabla-intentos {
+  display: table;
+  width: 95%;
+  max-width: 900px;
+  border-spacing: 6px;
+}
+
+/* Fila */
+.fila {
+  display: table-row;
+}
+
+/* Celda */
+.celda {
+  display: table-cell;
+  padding: 10px;
+  min-height: 70px;
+  border-radius: 8px;
+  border: 2px solid #222;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
+  background-color: rgba(0,0,0,0.3);
+  color: white;
+}
+
+/* Encabezado */
+.encabezado .celda {
+  background-color: #444;
+  color: #ffd700;
+}
+
+/* Centrar la palabra "Carta" en el encabezado */
+.encabezado .carta {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+/* Columna carta */
+.carta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Imagen de carta */
+.card-img {
+  width: 50px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.card-name {
+  font-weight: bold;
+  color: #ffd700;
+}
+
+/* Colores de coincidencia */
+.match {
+  background-color: #00a000;
+}
+
+.no-match {
+  background-color: #a00000;
+}
+
+/* Ajustar ancho mínimo de Tipo, Rareza y Elixir */
+.fila .celda:nth-child(3),
+.fila .celda:nth-child(4),
+.fila .celda:nth-child(5),
+.encabezado .celda:nth-child(3),
+.encabezado .celda:nth-child(4),
+.encabezado .celda:nth-child(5) {
+  min-width: 90px;
+}
+
+.sugerencias-box {
+  background-color: rgba(0,0,0,0.7);
+  border: 2px solid #ffd700;
+  border-radius: 8px;
+  margin-top: -10px;
+  margin-bottom: 20px;
+  width: 260px;
+  max-height: 200px;
+  overflow-y: auto;
+  color: #ffd700;
+  font-weight: bold;
+}
+
+.sugerencia-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.sugerencia-item:hover,
+.sugerencia-item.selected {
+  background-color: #0066cc;
+  color: white;
+  border-radius: 5px;
+}
+
+.sugerencia-img {
+  width: 30px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 5px;
+}

@@ -1,12 +1,14 @@
-import './App.css';
-import HomePage from './pages/HomePage';
+import { Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import GamePage from "./pages/GamePage";
 
-const App: React.FC = () => {
+export default function App() {
   return (
-    <div className="App">
-      <HomePage />
-    </div>
+    <>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/game" element={<GamePage />} />
+      </Routes>
+    </>
   );
-};
-
-export default App;
+}
