@@ -15,6 +15,8 @@ const HomePage: React.FC = () => {
         <button className="home-button game">JUEGO</button>
         <button className="home-button collection">COLECCIONARIO</button>
       </div>
+      
+      <h1>QWUW</h1>
     </div>
   );
 };
