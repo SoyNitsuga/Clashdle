@@ -1,163 +1,59 @@
 import { useState, useEffect, useRef } from "react";
 import "./GamePage.css";
 import confetti from "canvas-confetti";
+import CardTable from "../components/CardTable";
+import type { Card } from "../components/CardTable";
 
-interface Carta {
-  nombre: string;
-  genero: string;
-  tipo: string;
-  rareza: string;
-  elixir: number;
-  fechaLanzamiento: number;
-  arena: string;
-  rango: string;
-  imagen: string;
-}
-
-const cartas: Carta[] = [
-  {
-    nombre: "Valkiria",
-    genero: "Femenino",
-    tipo: "Tropa",
-    rareza: "Rara",
-    elixir: 4,
-    fechaLanzamiento: 2016,
-    arena: "Hueso",
-    rango: "Cuerpo a cuerpo",
-    imagen: "../src/assets/fotos/Valquiria.png",
-  },
-  {
-    nombre: "Mini Pekka",
-    genero: "Ninguno",
-    tipo: "Tropa",
-    rareza: "Rara",
-    elixir: 4,
-    fechaLanzamiento: 2016,
-    arena: "Campo de Entrenamiento",
-    rango: "Cuerpo a cuerpo",
-    imagen: "../src/assets/fotos/mini pekka.png",
-  },
-  {
-    nombre: "Mosquetera",
-    genero: "Femenino",
-    tipo: "Tropa",
-    rareza: "Rara",
-    elixir: 4,
-    fechaLanzamiento: 2016,
-    arena: "Campo de Entrenamiento",
-    rango: "A distancia",
-    imagen: "../src/assets/fotos/Mosquetera.png",
-  },
-  {
-    nombre: "Bebé Dragón",
-    genero: "Ninguno",
-    tipo: "Tropa",
-    rareza: "Épica",
-    elixir: 4,
-    fechaLanzamiento: 2016,
-    arena: "Casa del P.E.K.K.A",
-    rango: "A distancia",
-    imagen: "../src/assets/fotos/BabyDragon.png",
-  },
-  {
-    nombre: "Caballero Dorado",
-    genero: "Masculino",
-    tipo: "Tropa",
-    rareza: "Campeón",
-    elixir: 4,
-    fechaLanzamiento: 2021,
-    arena: "Valle Electro",
-    rango: "Cuerpo a cuerpo",
-    imagen: "../src/assets/fotos/Golden Knight.png",
-  },
-  {
-    nombre: "Tronco",
-    genero: "Ninguno",
-    tipo: "Hechizo",
-    rareza: "Legendaria",
-    elixir: 2,
-    fechaLanzamiento: 2016,
-    arena: "Fosa de Huesos",
-    rango: "A distancia",
-    imagen: "../src/assets/fotos/Tronco.png",
-  },
-  {
-    nombre: "Torre Infernal",
-    genero: "Ninguno",
-    tipo: "Estructura",
-    rareza: "Rara",
-    elixir: 5,
-    fechaLanzamiento: 2016,
-    arena: "Fuerte del P.E.K.K.A",
-    rango: "A distancia",
-    imagen: "../src/assets/fotos/TorreInfernal.png",
-  },
-];
 
 function normalizarTexto(texto: string) {
-  return texto
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
+  return texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ").trim();
 }
 
 export default function GamePage() {
-  const [cartaSecreta, setCartaSecreta] = useState<Carta | null>(null);
+  const [cartas, setCartas] = useState<Card[]>([]);
+  const [cartaSecreta, setCartaSecreta] = useState<Card | null>(null);
   const [adivinanza, setAdivinanza] = useState("");
-  const [intentos, setIntentos] = useState<Carta[]>([]);
+  const [intentos, setIntentos] = useState<Card[]>([]);
   const [victoria, setVictoria] = useState(false);
-  const [sugerencias, setSugerencias] = useState<Carta[]>([]);
+  const [sugerencias, setSugerencias] = useState<Card[]>([]);
   const [seleccionIndice, setSeleccionIndice] = useState(0);
   const [cofreEstrellas, setCofreEstrellas] = useState<number | null>(null);
-  const [recompensa, setRecompensa] = useState<Carta | null>(null);
+  const [recompensa, setRecompensa] = useState<Card | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Elegir carta secreta cuando las cartas cargan
   useEffect(() => {
-    const aleatoria = cartas[Math.floor(Math.random() * cartas.length)];
-    setCartaSecreta(aleatoria);
-  }, []);
+    if (cartas.length > 0) {
+      const aleatoria = cartas[Math.floor(Math.random() * cartas.length)];
+      setCartaSecreta(aleatoria);
+    }
+  }, [cartas]);
 
   useEffect(() => {
-    if (adivinanza.trim() === "") {
+    if (adivinanza.trim() === "" || cartas.length === 0) {
       setSugerencias([]);
       return;
     }
 
-    const cartasDisponibles = cartas.filter(
-      (c) => !intentos.some((i) => i.nombre === c.nombre)
-    );
+    const cartasDisponibles = cartas.filter((c) => !intentos.some((i) => i.id === c.id));
 
     const coincidencias = cartas.filter((c) => {
-      const normalizadoNombre = normalizarTexto(c.nombre);
+      const normalizadoNombre = normalizarTexto(c.name);
       const normalizadoInput = normalizarTexto(adivinanza);
-
-      if (
-        cartasDisponibles.length === 1 &&
-        normalizadoNombre.includes(normalizadoInput)
-      ) {
-        return true;
-      }
-
-      return (
-        normalizadoNombre.includes(normalizadoInput) &&
-        cartasDisponibles.some((d) => d.nombre === c.nombre)
-      );
+      if (cartasDisponibles.length === 1 && normalizadoNombre.includes(normalizadoInput)) return true;
+      return normalizadoNombre.includes(normalizadoInput) && cartasDisponibles.some((d) => d.id === c.id);
     });
 
     setSugerencias(coincidencias);
     setSeleccionIndice(0);
-  }, [adivinanza, intentos]);
+  }, [adivinanza, intentos, cartas]);
 
   function manejarAdivinanza(nombre?: string) {
     const texto = nombre ?? adivinanza;
-    const encontrada = cartas.find(
-      (c) => normalizarTexto(c.nombre) === normalizarTexto(texto)
-    );
+    const encontrada = cartas.find((c) => normalizarTexto(c.name) === normalizarTexto(texto));
     if (!encontrada || !cartaSecreta) return;
 
-    if (intentos.some((c) => c.nombre === encontrada.nombre)) {
+    if (intentos.some((c) => c.id === encontrada.id)) {
       setAdivinanza("");
       setSugerencias([]);
       return;
@@ -167,7 +63,7 @@ export default function GamePage() {
     setAdivinanza("");
     setSugerencias([]);
 
-    if (encontrada.nombre === cartaSecreta.nombre) {
+    if (encontrada.id === cartaSecreta.id) {
       setVictoria(true);
       confetti({
         particleCount: 200,
@@ -186,34 +82,38 @@ export default function GamePage() {
     }
   }
 
-  function abrirCofre() {
-    if (!cofreEstrellas) return;
+function abrirCofre() {
+  if (!cofreEstrellas || cartas.length === 0) return;
 
-    const probabilidades = {
-      Común: 50 - cofreEstrellas * 5,
-      Rara: 30,
-      Épica: 15 + cofreEstrellas * 2,
-      Legendaria: 4 + cofreEstrellas,
-      Campeón: 1 + cofreEstrellas * 0.5,
-    };
+  const estrellas = cofreEstrellas;
 
-    const tirada = Math.random() * 100;
-    let acumulado = 0;
-    let rarezaSeleccionada = "Común";
+  // Probabilidades dinámicas según estrellas
+  const probabilidades: Record<string, number> = {
+    common: Math.max(50 - estrellas * 5, 10),      // Común
+    rare: Math.max(30 - (5 - estrellas) * 3, 10), // Rara
+    epic: 10 + estrellas * 4,                      // Épica
+    legendary: 5 + estrellas * 2,                 // Legendaria
+    champion: 1 + estrellas                        // Campeón
+  };
 
-    for (const [rareza, prob] of Object.entries(probabilidades)) {
-      acumulado += prob;
-      if (tirada <= acumulado) {
-        rarezaSeleccionada = rareza;
-        break;
-      }
+  const tirada = Math.random() * 100;
+  let acumulado = 0;
+  let rarezaSeleccionada = "common";
+
+  for (const [rareza, prob] of Object.entries(probabilidades)) {
+    acumulado += prob;
+    if (tirada <= acumulado) {
+      rarezaSeleccionada = rareza;
+      break;
     }
-
-    const posibles = cartas.filter((c) => c.rareza === rarezaSeleccionada);
-    const premio =
-      posibles[Math.floor(Math.random() * posibles.length)] || cartas[0];
-    setRecompensa(premio);
   }
+
+  // Filtramos las cartas usando `rarity`
+  const posibles = cartas.filter((c) => c.rarity.toLowerCase() === rarezaSeleccionada);
+  const premio = posibles[Math.floor(Math.random() * posibles.length)] || cartas[0];
+
+  setRecompensa(premio);
+}
 
   function colorCelda(valor: any, valorSecreto: any) {
     return valor === valorSecreto ? "match" : "no-match";
@@ -227,12 +127,10 @@ export default function GamePage() {
       setSeleccionIndice((prev) => (prev + 1) % sugerencias.length);
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      setSeleccionIndice(
-        (prev) => (prev - 1 + sugerencias.length) % sugerencias.length
-      );
+      setSeleccionIndice((prev) => (prev - 1 + sugerencias.length) % sugerencias.length);
     } else if (e.key === "Enter") {
       e.preventDefault();
-      manejarAdivinanza(sugerencias[seleccionIndice].nombre);
+      manejarAdivinanza(sugerencias[seleccionIndice].name);
     }
   }
 
@@ -267,28 +165,24 @@ export default function GamePage() {
           {sugerencias.map((c, i) => (
             <div
               key={i}
-              className={`sugerencia-item ${
-                i === seleccionIndice ? "selected" : ""
-              }`}
-              onClick={() => manejarAdivinanza(c.nombre)}
+              className={`sugerencia-item ${i === seleccionIndice ? "selected" : ""}`}
+              onClick={() => manejarAdivinanza(c.name)}
             >
-              <img src={c.imagen} alt={c.nombre} className="sugerencia-img" />
-              {c.nombre}
+              <img src={c.imageUrl} alt={c.name} className="sugerencia-img" />
+              {c.name}
             </div>
           ))}
         </div>
       )}
 
-      {/* --- BOX DE VICTORIA --- */}
       {victoria && cartaSecreta && (
         <div className="victory-box">
           <h2>¡Adivinaste!</h2>
-          <img src={cartaSecreta.imagen} alt={cartaSecreta.nombre} />
-          <p>{cartaSecreta.nombre}</p>
+          <img src={cartaSecreta.imageUrl} alt={cartaSecreta.name} />
+          <p>{cartaSecreta.name}</p>
         </div>
       )}
 
-      {/* --- BOX DEL COFRE Y RECOMPENSA --- */}
       {victoria && cofreEstrellas && !recompensa && (
         <div className="reward-box">
           <div className="estrellas-box">
@@ -303,26 +197,22 @@ export default function GamePage() {
           </div>
 
           <div className="cofre-container" onClick={abrirCofre}>
-            <img
-              src="../src/assets/fotos/Cofre.png"
-              alt="Cofre"
-              className="cofre-img"
-            />
+            <img src="../src/assets/fotos/Cofre.png" alt="Cofre" className="cofre-img" />
           </div>
         </div>
       )}
 
-      {/* --- BOX DE RECOMPENSA OBTENIDA --- */}
       {recompensa && (
         <div className="recompensa-box">
-          <h3>🎉 ¡Obtuviste una nueva carta!</h3>
-          <img src={recompensa.imagen} alt={recompensa.nombre} />
+          <h3>¡Obtuviste una nueva carta!</h3>
+          <img src={recompensa.imageUrl} alt={recompensa.name} />
           <p>
-            <b>{recompensa.nombre}</b> ({recompensa.rareza})
+            <b>{recompensa.name}</b> ({recompensa.rarity})
           </p>
         </div>
       )}
 
+      {/* Tabla de intentos igual que antes */}
       <div className="tabla-intentos">
         <div className="fila encabezado">
           <div className="celda carta">Carta</div>
@@ -338,65 +228,22 @@ export default function GamePage() {
         {intentos.map((carta, index) => (
           <div key={index} className="fila">
             <div className="celda carta">
-              <img src={carta.imagen} alt={carta.nombre} className="card-img" />
-              <span className="card-name">{carta.nombre}</span>
+              <img src={carta.imageUrl} alt={carta.name} className="card-img" />
+              <span className="card-name">{carta.name}</span>
             </div>
-            <div
-              className={`celda ${colorCelda(
-                carta.genero,
-                cartaSecreta?.genero
-              )}`}
-            >
-              {carta.genero}
-            </div>
-            <div
-              className={`celda ${colorCelda(carta.tipo, cartaSecreta?.tipo)}`}
-            >
-              {carta.tipo}
-            </div>
-            <div
-              className={`celda ${colorCelda(
-                carta.rareza,
-                cartaSecreta?.rareza
-              )}`}
-            >
-              {carta.rareza}
-            </div>
-            <div
-              className={`celda ${colorCelda(
-                carta.elixir,
-                cartaSecreta?.elixir
-              )}`}
-            >
-              {carta.elixir}
-            </div>
-            <div
-              className={`celda ${colorCelda(
-                carta.fechaLanzamiento,
-                cartaSecreta?.fechaLanzamiento
-              )}`}
-            >
-              {carta.fechaLanzamiento}
-            </div>
-            <div
-              className={`celda ${colorCelda(
-                carta.arena,
-                cartaSecreta?.arena
-              )}`}
-            >
-              {carta.arena}
-            </div>
-            <div
-              className={`celda ${colorCelda(
-                carta.rango,
-                cartaSecreta?.rango
-              )}`}
-            >
-              {carta.rango}
-            </div>
+            <div className={`celda ${colorCelda(carta.gender, cartaSecreta?.gender)}`}>{carta.gender}</div>
+            <div className={`celda ${colorCelda(carta.type, cartaSecreta?.type)}`}>{carta.type}</div>
+            <div className={`celda ${colorCelda(carta.rarity, cartaSecreta?.rarity)}`}>{carta.rarity}</div>
+            <div className={`celda ${colorCelda(carta.elixir, cartaSecreta?.elixir)}`}>{carta.elixir}</div>
+            <div className={`celda ${colorCelda(carta.release, cartaSecreta?.release)}`}>{carta.release}</div>
+            <div className={`celda ${colorCelda(carta.arena, cartaSecreta?.arena)}`}>{carta.arena}</div>
+            <div className={`celda ${colorCelda(carta.range, cartaSecreta?.range)}`}>{carta.range}</div>
           </div>
         ))}
       </div>
+
+      {/* Cargamos cartas desde CardTable */}
+      <CardTable setCartas={setCartas} />
     </div>
   );
 }

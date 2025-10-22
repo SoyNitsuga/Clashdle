@@ -1,7 +1,8 @@
-import "./HomePage.css";
+import React from "react";
 import { useNavigate } from "react-router-dom";
+import "./HomePage.css";
 
-export default function HomePage() {
+const HomePage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
@@ -13,12 +14,17 @@ export default function HomePage() {
         style={{ cursor: "pointer" }}
         onClick={() => window.location.reload()}
       />
+
       <div className="home-buttons">
         <button className="home-button game" onClick={() => navigate("/game")}>
           JUEGO
         </button>
-        <button className="home-button collection">COLECCIONARIO</button>
+        <button className="home-button collection" onClick={() => navigate("/collection")}>
+          COLECCIONARIO
+        </button>
       </div>
     </div>
   );
-}
+};
+
+export default HomePage;
