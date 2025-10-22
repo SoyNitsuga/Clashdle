@@ -1,20 +1,18 @@
-/* --- RESET Y AJUSTES GLOBALES --- */
 html, body, #root, .App {
   margin: 0;
   padding: 0;
   height: 100%;
   width: 100%;
-  overflow: auto; /* Permite scroll cuando se excede la altura */
+  overflow: auto;
 }
 
-/* --- CONTENEDOR PRINCIPAL --- */
 .game-container {
-  position: relative; /* No fixed */
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  min-height: 100vh; /* Ocupa al menos toda la pantalla */
+  min-height: 100vh;
   width: 100%;
   background: linear-gradient(180deg, rgba(27,31,59,0.7) 0%, rgba(42,47,90,0.9) 100%),
               url("/src/assets/fotos/Fondo Clash Royale.jpeg") center center / cover no-repeat;
@@ -23,10 +21,8 @@ html, body, #root, .App {
   text-align: center;
   padding: 20px;
   box-sizing: border-box;
-  /* overflow: hidden; */ /* quitamos para scroll general */
 }
 
-/* --- IMAGEN DEL TÍTULO --- */
 .titulo-imagen {
   width: 500px;
   max-width: 90%;
@@ -37,14 +33,12 @@ html, body, #root, .App {
   cursor: pointer;
 }
 
-/* --- TÍTULO PRINCIPAL --- */
 .game-title {
   font-size: 2rem;
   margin-bottom: 1rem;
   text-shadow: 2px 2px 6px #000;
 }
 
-/* --- SECCIÓN DE INPUT --- */
 .input-section {
   display: flex;
   align-items: center;
@@ -78,7 +72,6 @@ html, body, #root, .App {
   background-color: #007bff;
 }
 
-/* --- SUGERENCIAS --- */
 .sugerencias-box {
   background: rgba(0, 0, 0, 0.5);
   border: 2px solid gold;
@@ -111,21 +104,19 @@ html, body, #root, .App {
   border-radius: 5px;
 }
 
-/* --- TABLA DE INTENTOS --- */
 .tabla-intentos {
   margin-top: 1.5rem;
   width: 95%;
   max-width: 1000px;
   border-collapse: separate;
-  border-spacing: 0 6px; /* Espacio entre filas */
+  border-spacing: 0 6px;
 }
 
-/* FILAS */
 .fila {
   display: grid;
-  grid-template-columns: 1.5fr repeat(7, 1fr); /* columnas: carta + 7 características */
+  grid-template-columns: 1.5fr repeat(7, 1fr);
   align-items: center;
-  background: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+  background: rgba(0, 0, 0, 0.5);
   border-radius: 12px;
   padding: 0.4rem 0.6rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.3);
@@ -137,28 +128,25 @@ html, body, #root, .App {
   background: rgba(0,0,0,0.65);
 }
 
-/* ENCABEZADO */
 .fila.encabezado {
-  background: linear-gradient(90deg, #1e3a8a, #3b82f6); /* Azul intenso degradado */
-  color: #ffd700; /* Texto dorado */
+  background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+  color: #ffd700;
   font-weight: bold;
-  text-shadow: 0 0 4px #000; /* Sombra para resaltar el texto */
+  text-shadow: 0 0 4px #000;
   border-radius: 12px;
-  border: 2px solid gold; /* Mantiene el borde dorado */
+  border: 2px solid gold;
 }
 
-
-/* CELDAS GENERALES */
 .celda {
-  display: flex;               /* Flex para alinear verticalmente */
-  align-items: center;         /* Centrado vertical */
-  justify-content: center;     /* Centrado horizontal (salvo carta) */
+  display: flex;              
+  align-items: center;
+  justify-content: center;     
   padding: 0.5rem;
   text-align: center;
   border-right: 1px solid rgba(255,255,255,0.2);
   font-size: 0.95rem;
   color: #ffee00;
-  min-height: 50px;            /* Altura uniforme de todas las celdas */
+  min-height: 50px;           
   box-sizing: border-box;
 }
 
@@ -166,31 +154,25 @@ html, body, #root, .App {
   border-right: none;
 }
 
-/* CELDA DE CARTA CON IMAGEN */
 .celda.carta {
   display: flex;
   align-items: center;
-  justify-content: flex-start;  /* Imagen a la izquierda */
+  justify-content: flex-start;
   gap: 10px;
-  padding-left: 10px;           /* Espacio extra a la izquierda */
+  padding-left: 10px;
 }
 
-/* IMAGEN DE CARTA */
 .card-img {
   width: 45px;
   height: auto;
   border-radius: 6px;
-  border: 1px solid #ffd700;
-  box-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
 }
 
-/* NOMBRE DE CARTA */
 .card-name {
   font-size: 0.95rem;
   font-weight: 600;
 }
 
-/* COLORES DE COINCIDENCIA */
 .match {
   background-color: rgba(0, 200, 0, 0.45);
   border-radius: 8px;
@@ -203,7 +185,6 @@ html, body, #root, .App {
   transition: background-color 0.3s ease;
 }
 
-/* --- BOX DE VICTORIA --- */
 .victory-box {
   margin-top: 1.5rem;
   background-color: rgba(0, 0, 0, 0.5);
@@ -219,7 +200,6 @@ html, body, #root, .App {
   margin: 0.5rem;
 }
 
-/* --- NUEVO BOX DE COFRE Y ESTRELLAS --- */
 .reward-box {
   display: flex;
   flex-direction: column;
@@ -228,7 +208,6 @@ html, body, #root, .App {
   animation: fadeIn 0.8s ease forwards;
 }
 
-/* Estrellas */
 .estrellas-box {
   display: flex;
   justify-content: center;
@@ -249,7 +228,6 @@ html, body, #root, .App {
   100% { transform: scale(1); }
 }
 
-/* Cofre animado */
 .cofre-container {
   position: relative;
   display: inline-block;
@@ -269,7 +247,6 @@ html, body, #root, .App {
   filter: drop-shadow(0 0 10px gold);
 }
 
-/* --- BOX DE RECOMPENSA --- */
 .recompensa-box {
   margin-top: 1.5rem;
   background-color: rgba(0, 0, 0, 0.6);
@@ -285,7 +262,6 @@ html, body, #root, .App {
   margin: 0.5rem;
 }
 
-/* --- ANIMACIONES --- */
 @keyframes bounceIn {
   0% { transform: scale(0.3); opacity: 0; }
   50% { transform: scale(1.1); opacity: 1; }
