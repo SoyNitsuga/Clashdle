@@ -154,14 +154,6 @@ html, body, #root, .App {
   border-right: none;
 }
 
-.celda {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  padding-left: 10px;
-}
-
 .carta{
   display: flex;
   align-items: center;
