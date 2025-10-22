@@ -1,21 +1,19 @@
-/* Reset y ajuste del body */
 html, body, #root, .App {
   margin: 0;
   padding: 0;
   height: 100%;
   width: 100%;
-  overflow: hidden; /* Evita scroll */
+  overflow: hidden; 
 }
 
-/* Contenedor principal fijo */
 .home-container {
-  position: fixed; /* Siempre en pantalla */
+  position: fixed;
   top: 0;
   left: 0;
   display: flex;
   flex-direction: column;
   align-items: center; 
-  justify-content: flex-start; /* Título arriba */
+  justify-content: flex-start;
   height: 100vh;
   width: 100vw;
   text-align: center;
@@ -23,61 +21,29 @@ html, body, #root, .App {
               url("/src/assets/fotos/Fondo Clash Royale.jpeg") center center / cover no-repeat;
   color: #fff;
   font-family: "Supercell-Magic", sans-serif;
-  overflow: hidden; /* Evita que contenido sobresalga */
+  overflow: hidden;
   padding: 20px;
   box-sizing: border-box;
 }
 
-/* Imagen del título */
 .titulo-imagen {
   width: 500px;
-  max-width: 90%; /* Ajuste para pantallas pequeñas */
+  max-width: 90%;
   height: auto;
   display: block;
-  margin: 0 auto; /* centrado horizontal */
+  margin: 0 auto;
   animation: bounceIn 1s ease forwards;
 }
 
-/* Contenedor de botones centrado vertical y horizontalmente */
 .home-buttons {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
-  flex-grow: 1; /* Ocupa el espacio disponible */
+  flex-grow: 1;
 }
 
-/* Animaciones */
-@keyframes bounceIn {
-  0% {
-    transform: scale(0.3);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.1);
-    opacity: 1;
-  }
-  70% {
-    transform: scale(0.9);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-@keyframes fadeUp {
-  0% {
-    transform: translateY(40px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-/* Botones */
 .home-button {
   background-color: #004aad;
   border: 3px solid #ffd700;
@@ -114,4 +80,32 @@ html, body, #root, .App {
 .home-button:active {
   transform: translateY(2px);
   box-shadow: 0 2px 0 #002d72;
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeUp {
+  0% {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

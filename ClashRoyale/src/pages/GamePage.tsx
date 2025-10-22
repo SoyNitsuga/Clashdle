@@ -21,7 +21,6 @@ export default function GamePage() {
   const [recompensa, setRecompensa] = useState<Card | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Elegir carta secreta cuando las cartas cargan
   useEffect(() => {
     if (cartas.length > 0) {
       const aleatoria = cartas[Math.floor(Math.random() * cartas.length)];
@@ -87,7 +86,6 @@ function abrirCofre() {
 
   const estrellas = cofreEstrellas;
 
-  // Probabilidades dinámicas según estrellas
   const probabilidades: Record<string, number> = {
     common: Math.max(50 - estrellas * 5, 10),      // Común
     rare: Math.max(30 - (5 - estrellas) * 3, 10), // Rara
@@ -108,7 +106,6 @@ function abrirCofre() {
     }
   }
 
-  // Filtramos las cartas usando `rarity`
   const posibles = cartas.filter((c) => c.rarity.toLowerCase() === rarezaSeleccionada);
   const premio = posibles[Math.floor(Math.random() * posibles.length)] || cartas[0];
 
@@ -212,7 +209,7 @@ function abrirCofre() {
         </div>
       )}
 
-      {/* Tabla de intentos igual que antes */}
+      {}
       <div className="tabla-intentos">
         <div className="fila encabezado">
           <div className="celda carta">Carta</div>
@@ -242,7 +239,7 @@ function abrirCofre() {
         ))}
       </div>
 
-      {/* Cargamos cartas desde CardTable */}
+      {}
       <CardTable setCartas={setCartas} />
     </div>
   );
