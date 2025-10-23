@@ -1,4 +1,7 @@
-html, body, #root, .App {
+html,
+body,
+#root,
+.App {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -14,8 +17,8 @@ html, body, #root, .App {
   justify-content: flex-start;
   min-height: 100vh;
   width: 100%;
-  background: linear-gradient(180deg, rgba(27,31,59,0.7) 0%, rgba(42,47,90,0.9) 100%),
-              url("/src/assets/fotos/Fondo Clash Royale.jpeg") center center / cover no-repeat;
+  background: linear-gradient(180deg, rgba(27, 31, 59, 0.7) 0%, rgba(42, 47, 90, 0.9) 100%),
+    url("/src/assets/fotos/Fondo Clash Royale.jpeg") center center / cover no-repeat;
   color: #ffee00;
   font-family: "Supercell-Magic", sans-serif;
   text-align: center;
@@ -119,13 +122,13 @@ html, body, #root, .App {
   background: rgba(0, 0, 0, 0.5);
   border-radius: 12px;
   padding: 0.4rem 0.6rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .fila:hover {
   transform: translateY(-2px);
-  background: rgba(0,0,0,0.65);
+  background: rgba(0, 0, 0, 0.65);
 }
 
 .fila.encabezado {
@@ -139,15 +142,15 @@ html, body, #root, .App {
 }
 
 .celda {
-  display: flex;              
+  display: flex;
   align-items: center;
-  justify-content: center;     
+  justify-content: center;
   padding: 1rem;
   text-align: center;
-  border-right: 1px solid rgba(255,255,255,0.2);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
   font-size: 0.95rem;
   color: #ffee00;
-  min-height: 50px;           
+  min-height: 50px;
   box-sizing: border-box;
 }
 
@@ -216,9 +219,19 @@ html, body, #root, .App {
 }
 
 @keyframes starPop {
-  0% { transform: scale(0); opacity: 0; }
-  60% { transform: scale(1.3); opacity: 1; }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  60% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 .cofre-container {
@@ -306,19 +319,84 @@ html, body, #root, .App {
   transform: scale(1.05);
 }
 
+.flecha {
+  margin-left: 6px;
+  font-size: 1.2rem;
+}
+
+.flecha.up {
+  color: #00ff00;
+  /* verde */
+}
+
+.flecha.down {
+  color: #ff5555;
+  /* rojo */
+}
+
+.botonera-recompensa {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.play-again-button {
+  background-color: #008f39;
+  border: 2px solid gold;
+  color: white;
+  font-weight: bold;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.play-again-button:hover {
+  background-color: #00c94a;
+  transform: scale(1.05);
+}
+
 @keyframes bounceIn {
-  0% { transform: scale(0.3); opacity: 0; }
-  50% { transform: scale(1.1); opacity: 1; }
-  70% { transform: scale(0.9); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+
+  70% {
+    transform: scale(0.9);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes cofreBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

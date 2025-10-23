@@ -25,8 +25,6 @@ export default function GamePage() {
   const [cofreEstrellas, setCofreEstrellas] = useState<number | null>(null);
   const [recompensa, setRecompensa] = useState<Card | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [cofreAbierto, setCofreAbierto] = useState(false);
-  const [cartaGanada, setCartaGanada] = useState<Card | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -106,11 +104,11 @@ export default function GamePage() {
     const estrellas = cofreEstrellas;
 
     const probabilidades: Record<string, number> = {
-      common: Math.max(50 - estrellas * 5, 10), // Común
-      rare: Math.max(30 - (5 - estrellas) * 3, 10), // Rara
-      epic: 10 + estrellas * 4, // Épica
-      legendary: 5 + estrellas * 2, // Legendaria
-      champion: 1 + estrellas, // Campeón
+      common: Math.max(50 - estrellas * 5, 10),
+      rare: Math.max(30 - (5 - estrellas) * 3, 10),
+      epic: 10 + estrellas * 4,
+      legendary: 5 + estrellas * 2,
+      champion: 1 + estrellas,
     };
 
     const tirada = Math.random() * 100;
@@ -131,22 +129,45 @@ export default function GamePage() {
     const premio =
       posibles[Math.floor(Math.random() * posibles.length)] || cartas[0];
     setRecompensa(premio);
+
+
     const coleccionActual = JSON.parse(
-      localStorage.getItem("coleccion") || "[]"
+      localStorage.getItem("coleccionClashdle") || "[]"
     );
-    const nuevaColeccion = [...coleccionActual, premio];
-    localStorage.setItem("coleccion", JSON.stringify(nuevaColeccion));
+
 
     const yaExiste = coleccionActual.some((c: Card) => c.id === premio.id);
-
     if (!yaExiste) {
       const nuevaColeccion = [...coleccionActual, premio];
       localStorage.setItem("coleccionClashdle", JSON.stringify(nuevaColeccion));
     }
   }
 
+
   function colorCelda(valor: any, valorSecreto: any) {
     return valor === valorSecreto ? "match" : "no-match";
+  }
+
+
+  function compararValor(valor: any, valorSecreto: any, tipo: string) {
+    if (valor === valorSecreto) return <span className="flecha">✅</span>;
+
+    let isDown = false;
+
+    if (tipo === "elixir" || tipo === "release") {
+      isDown = valor > valorSecreto;
+    } else if (tipo === "rarity") {
+      const orden = ["common", "rare", "epic", "legendary", "champion"];
+      isDown =
+        orden.indexOf(valor.toLowerCase()) >
+        orden.indexOf(valorSecreto.toLowerCase());
+    }
+
+    return (
+      <span className={`flecha ${isDown ? "down" : "up"}`}>
+        {isDown ? "↓" : "↑"}
+      </span>
+    );
   }
 
   function manejarTecla(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -197,9 +218,8 @@ export default function GamePage() {
           {sugerencias.map((c, i) => (
             <div
               key={i}
-              className={`sugerencia-item ${
-                i === seleccionIndice ? "selected" : ""
-              }`}
+              className={`sugerencia-item ${i === seleccionIndice ? "selected" : ""
+                }`}
               onClick={() => manejarAdivinanza(c.name)}
             >
               <img src={c.imageUrl} alt={c.name} className="sugerencia-img" />
@@ -248,47 +268,33 @@ export default function GamePage() {
             <b>{recompensa.name}</b> ({recompensa.rarity})
           </p>
 
-          <button
-            className="go-to-collection-button"
-            onClick={() => navigate("/collection")}
-          >
-            Ir al Coleccionario
-          </button>
-        </div>
-      )}
-
-      {cofreAbierto && cartaGanada && (
-        <div className="cofre-recompensa">
-          <h2>¡Ganaste una carta nueva!</h2>
-          <img
-            src={cartaGanada.imageUrl}
-            alt={cartaGanada.name}
-            className="carta-ganada"
-          />
-          <p>{cartaGanada.name}</p>
-
-          <div className="botonera-cofre">
+          <div className="botonera-recompensa">
             <button
-              className="coleccion-btn"
+              className="go-to-collection-button"
               onClick={() => navigate("/collection")}
             >
-              📜 Ver Coleccionario
+              📜 Ir al Coleccionario
             </button>
 
             <button
-              className="seguir-btn"
+              className="play-again-button"
               onClick={() => {
-                setCofreAbierto(false);
-                setCartaGanada(null);
+                setRecompensa(null);
+                setIntentos([]);
+                setVictoria(false);
+                setCofreEstrellas(null);
+                const nuevaCarta =
+                  cartas[Math.floor(Math.random() * cartas.length)];
+                setCartaSecreta(nuevaCarta);
               }}
             >
-              🎮 Seguir Jugando
+              🔁 Volver a Jugar
             </button>
           </div>
         </div>
       )}
 
-      {}
+
       <div className="tabla-intentos">
         <div className="fila encabezado">
           <div className="celda carta">Carta</div>
@@ -326,7 +332,9 @@ export default function GamePage() {
                 cartaSecreta?.rarity
               )}`}
             >
-              {carta.rarity}
+              {carta.rarity}{" "}
+              {cartaSecreta &&
+                compararValor(carta.rarity, cartaSecreta.rarity, "rarity")}
             </div>
             <div
               className={`celda ${colorCelda(
@@ -334,7 +342,9 @@ export default function GamePage() {
                 cartaSecreta?.elixir
               )}`}
             >
-              {carta.elixir}
+              {carta.elixir}{" "}
+              {cartaSecreta &&
+                compararValor(carta.elixir, cartaSecreta.elixir, "elixir")}
             </div>
             <div
               className={`celda ${colorCelda(
@@ -342,7 +352,9 @@ export default function GamePage() {
                 cartaSecreta?.release
               )}`}
             >
-              {carta.release}
+              {carta.release}{" "}
+              {cartaSecreta &&
+                compararValor(carta.release, cartaSecreta.release, "release")}
             </div>
             <div
               className={`celda ${colorCelda(
@@ -364,7 +376,6 @@ export default function GamePage() {
         ))}
       </div>
 
-      {}
       <CardTable setCartas={setCartas} />
     </div>
   );
