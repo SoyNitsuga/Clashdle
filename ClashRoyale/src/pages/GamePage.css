@@ -255,6 +255,57 @@ html, body, #root, .App {
   margin: 0.5rem;
 }
 
+.go-to-collection-button {
+  margin-top: 10px;
+  background-color: #0066cc;
+  border: 2px solid gold;
+  color: white;
+  font-weight: bold;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.go-to-collection-button:hover {
+  background-color: #007bff;
+  transform: scale(1.05);
+}
+
+.botonera-cofre {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.coleccion-btn,
+.seguir-btn {
+  background-color: #0044aa;
+  border: 2px solid gold;
+  color: white;
+  font-weight: bold;
+  padding: 10px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: "Supercell-Magic", sans-serif;
+}
+
+.coleccion-btn:hover {
+  background-color: #0066ff;
+  transform: scale(1.05);
+}
+
+.seguir-btn {
+  background-color: #006622;
+}
+
+.seguir-btn:hover {
+  background-color: #00aa33;
+  transform: scale(1.05);
+}
+
 @keyframes bounceIn {
   0% { transform: scale(0.3); opacity: 0; }
   50% { transform: scale(1.1); opacity: 1; }

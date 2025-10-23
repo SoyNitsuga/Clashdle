@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import "./GamePage.css";
 import confetti from "canvas-confetti";
 import CardTable from "../components/CardTable";
@@ -24,6 +25,9 @@ export default function GamePage() {
   const [cofreEstrellas, setCofreEstrellas] = useState<number | null>(null);
   const [recompensa, setRecompensa] = useState<Card | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [cofreAbierto, setCofreAbierto] = useState(false);
+  const [cartaGanada, setCartaGanada] = useState<Card | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (cartas.length > 0) {
@@ -127,10 +131,12 @@ export default function GamePage() {
     const premio =
       posibles[Math.floor(Math.random() * posibles.length)] || cartas[0];
     setRecompensa(premio);
-
     const coleccionActual = JSON.parse(
-      localStorage.getItem("coleccionClashdle") || "[]"
+      localStorage.getItem("coleccion") || "[]"
     );
+    const nuevaColeccion = [...coleccionActual, premio];
+    localStorage.setItem("coleccion", JSON.stringify(nuevaColeccion));
+
     const yaExiste = coleccionActual.some((c: Card) => c.id === premio.id);
 
     if (!yaExiste) {
@@ -241,6 +247,44 @@ export default function GamePage() {
           <p>
             <b>{recompensa.name}</b> ({recompensa.rarity})
           </p>
+
+          <button
+            className="go-to-collection-button"
+            onClick={() => navigate("/collection")}
+          >
+            Ir al Coleccionario
+          </button>
+        </div>
+      )}
+
+      {cofreAbierto && cartaGanada && (
+        <div className="cofre-recompensa">
+          <h2>¡Ganaste una carta nueva!</h2>
+          <img
+            src={cartaGanada.imageUrl}
+            alt={cartaGanada.name}
+            className="carta-ganada"
+          />
+          <p>{cartaGanada.name}</p>
+
+          <div className="botonera-cofre">
+            <button
+              className="coleccion-btn"
+              onClick={() => navigate("/collection")}
+            >
+              📜 Ver Coleccionario
+            </button>
+
+            <button
+              className="seguir-btn"
+              onClick={() => {
+                setCofreAbierto(false);
+                setCartaGanada(null);
+              }}
+            >
+              🎮 Seguir Jugando
+            </button>
+          </div>
         </div>
       )}
 
