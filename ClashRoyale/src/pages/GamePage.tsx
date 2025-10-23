@@ -4,9 +4,13 @@ import confetti from "canvas-confetti";
 import CardTable from "../components/CardTable";
 import type { Card } from "../components/CardTable";
 
-
 function normalizarTexto(texto: string) {
-  return texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ").trim();
+  return texto
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 export default function GamePage() {
@@ -34,13 +38,22 @@ export default function GamePage() {
       return;
     }
 
-    const cartasDisponibles = cartas.filter((c) => !intentos.some((i) => i.id === c.id));
+    const cartasDisponibles = cartas.filter(
+      (c) => !intentos.some((i) => i.id === c.id)
+    );
 
     const coincidencias = cartas.filter((c) => {
       const normalizadoNombre = normalizarTexto(c.name);
       const normalizadoInput = normalizarTexto(adivinanza);
-      if (cartasDisponibles.length === 1 && normalizadoNombre.includes(normalizadoInput)) return true;
-      return normalizadoNombre.includes(normalizadoInput) && cartasDisponibles.some((d) => d.id === c.id);
+      if (
+        cartasDisponibles.length === 1 &&
+        normalizadoNombre.includes(normalizadoInput)
+      )
+        return true;
+      return (
+        normalizadoNombre.includes(normalizadoInput) &&
+        cartasDisponibles.some((d) => d.id === c.id)
+      );
     });
 
     setSugerencias(coincidencias);
@@ -49,7 +62,9 @@ export default function GamePage() {
 
   function manejarAdivinanza(nombre?: string) {
     const texto = nombre ?? adivinanza;
-    const encontrada = cartas.find((c) => normalizarTexto(c.name) === normalizarTexto(texto));
+    const encontrada = cartas.find(
+      (c) => normalizarTexto(c.name) === normalizarTexto(texto)
+    );
     if (!encontrada || !cartaSecreta) return;
 
     if (intentos.some((c) => c.id === encontrada.id)) {
@@ -81,36 +96,48 @@ export default function GamePage() {
     }
   }
 
-function abrirCofre() {
-  if (!cofreEstrellas || cartas.length === 0) return;
+  function abrirCofre() {
+    if (!cofreEstrellas || cartas.length === 0) return;
 
-  const estrellas = cofreEstrellas;
+    const estrellas = cofreEstrellas;
 
-  const probabilidades: Record<string, number> = {
-    common: Math.max(50 - estrellas * 5, 10),      // Común
-    rare: Math.max(30 - (5 - estrellas) * 3, 10), // Rara
-    epic: 10 + estrellas * 4,                      // Épica
-    legendary: 5 + estrellas * 2,                 // Legendaria
-    champion: 1 + estrellas                        // Campeón
-  };
+    const probabilidades: Record<string, number> = {
+      common: Math.max(50 - estrellas * 5, 10), // Común
+      rare: Math.max(30 - (5 - estrellas) * 3, 10), // Rara
+      epic: 10 + estrellas * 4, // Épica
+      legendary: 5 + estrellas * 2, // Legendaria
+      champion: 1 + estrellas, // Campeón
+    };
 
-  const tirada = Math.random() * 100;
-  let acumulado = 0;
-  let rarezaSeleccionada = "common";
+    const tirada = Math.random() * 100;
+    let acumulado = 0;
+    let rarezaSeleccionada = "common";
 
-  for (const [rareza, prob] of Object.entries(probabilidades)) {
-    acumulado += prob;
-    if (tirada <= acumulado) {
-      rarezaSeleccionada = rareza;
-      break;
+    for (const [rareza, prob] of Object.entries(probabilidades)) {
+      acumulado += prob;
+      if (tirada <= acumulado) {
+        rarezaSeleccionada = rareza;
+        break;
+      }
+    }
+
+    const posibles = cartas.filter(
+      (c) => c.rarity.toLowerCase() === rarezaSeleccionada
+    );
+    const premio =
+      posibles[Math.floor(Math.random() * posibles.length)] || cartas[0];
+    setRecompensa(premio);
+
+    const coleccionActual = JSON.parse(
+      localStorage.getItem("coleccionClashdle") || "[]"
+    );
+    const yaExiste = coleccionActual.some((c: Card) => c.id === premio.id);
+
+    if (!yaExiste) {
+      const nuevaColeccion = [...coleccionActual, premio];
+      localStorage.setItem("coleccionClashdle", JSON.stringify(nuevaColeccion));
     }
   }
-
-  const posibles = cartas.filter((c) => c.rarity.toLowerCase() === rarezaSeleccionada);
-  const premio = posibles[Math.floor(Math.random() * posibles.length)] || cartas[0];
-
-  setRecompensa(premio);
-}
 
   function colorCelda(valor: any, valorSecreto: any) {
     return valor === valorSecreto ? "match" : "no-match";
@@ -124,7 +151,9 @@ function abrirCofre() {
       setSeleccionIndice((prev) => (prev + 1) % sugerencias.length);
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      setSeleccionIndice((prev) => (prev - 1 + sugerencias.length) % sugerencias.length);
+      setSeleccionIndice(
+        (prev) => (prev - 1 + sugerencias.length) % sugerencias.length
+      );
     } else if (e.key === "Enter") {
       e.preventDefault();
       manejarAdivinanza(sugerencias[seleccionIndice].name);
@@ -162,7 +191,9 @@ function abrirCofre() {
           {sugerencias.map((c, i) => (
             <div
               key={i}
-              className={`sugerencia-item ${i === seleccionIndice ? "selected" : ""}`}
+              className={`sugerencia-item ${
+                i === seleccionIndice ? "selected" : ""
+              }`}
               onClick={() => manejarAdivinanza(c.name)}
             >
               <img src={c.imageUrl} alt={c.name} className="sugerencia-img" />
@@ -194,7 +225,11 @@ function abrirCofre() {
           </div>
 
           <div className="cofre-container" onClick={abrirCofre}>
-            <img src="../src/assets/fotos/Cofre.png" alt="Cofre" className="cofre-img" />
+            <img
+              src="../src/assets/fotos/Cofre.png"
+              alt="Cofre"
+              className="cofre-img"
+            />
           </div>
         </div>
       )}
@@ -228,13 +263,59 @@ function abrirCofre() {
               <img src={carta.imageUrl} alt={carta.name} className="card-img" />
               <span className="card-name">{carta.name}</span>
             </div>
-            <div className={`celda ${colorCelda(carta.gender, cartaSecreta?.gender)}`}>{carta.gender}</div>
-            <div className={`celda ${colorCelda(carta.type, cartaSecreta?.type)}`}>{carta.type}</div>
-            <div className={`celda ${colorCelda(carta.rarity, cartaSecreta?.rarity)}`}>{carta.rarity}</div>
-            <div className={`celda ${colorCelda(carta.elixir, cartaSecreta?.elixir)}`}>{carta.elixir}</div>
-            <div className={`celda ${colorCelda(carta.release, cartaSecreta?.release)}`}>{carta.release}</div>
-            <div className={`celda ${colorCelda(carta.arena, cartaSecreta?.arena)}`}>{carta.arena}</div>
-            <div className={`celda ${colorCelda(carta.range, cartaSecreta?.range)}`}>{carta.range}</div>
+            <div
+              className={`celda ${colorCelda(
+                carta.gender,
+                cartaSecreta?.gender
+              )}`}
+            >
+              {carta.gender}
+            </div>
+            <div
+              className={`celda ${colorCelda(carta.type, cartaSecreta?.type)}`}
+            >
+              {carta.type}
+            </div>
+            <div
+              className={`celda ${colorCelda(
+                carta.rarity,
+                cartaSecreta?.rarity
+              )}`}
+            >
+              {carta.rarity}
+            </div>
+            <div
+              className={`celda ${colorCelda(
+                carta.elixir,
+                cartaSecreta?.elixir
+              )}`}
+            >
+              {carta.elixir}
+            </div>
+            <div
+              className={`celda ${colorCelda(
+                carta.release,
+                cartaSecreta?.release
+              )}`}
+            >
+              {carta.release}
+            </div>
+            <div
+              className={`celda ${colorCelda(
+                carta.arena,
+                cartaSecreta?.arena
+              )}`}
+            >
+              {carta.arena}
+            </div>
+            <div
+              className={`celda ${colorCelda(
+                carta.range,
+                cartaSecreta?.range
+              )}`}
+            >
+              {carta.range}
+            </div>
           </div>
         ))}
       </div>
