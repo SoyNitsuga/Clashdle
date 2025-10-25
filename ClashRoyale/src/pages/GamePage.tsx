@@ -98,51 +98,52 @@ export default function GamePage() {
     }
   }
 
-  function abrirCofre() {
-    if (!cofreEstrellas || cartas.length === 0) return;
+function abrirCofre() {
+  if (!cofreEstrellas || cartas.length === 0) return;
 
-    const estrellas = cofreEstrellas;
+  const estrellas = cofreEstrellas;
 
-    const probabilidades: Record<string, number> = {
-      common: Math.max(50 - estrellas * 5, 10),
-      rare: Math.max(30 - (5 - estrellas) * 3, 10),
-      epic: 10 + estrellas * 4,
-      legendary: 5 + estrellas * 2,
-      champion: 1 + estrellas,
-    };
+  const probabilidades: Record<string, number> = {
+    common: Math.max(50 - estrellas * 5, 10),
+    rare: Math.max(30 - (5 - estrellas) * 3, 10),
+    epic: 10 + estrellas * 4,
+    legendary: 5 + estrellas * 2,
+    champion: 1 + estrellas,
+  };
 
-    const tirada = Math.random() * 100;
-    let acumulado = 0;
-    let rarezaSeleccionada = "common";
+  const tirada = Math.random() * 100;
+  let acumulado = 0;
+  let rarezaSeleccionada = "common";
 
-    for (const [rareza, prob] of Object.entries(probabilidades)) {
-      acumulado += prob;
-      if (tirada <= acumulado) {
-        rarezaSeleccionada = rareza;
-        break;
-      }
-    }
-
-    const posibles = cartas.filter(
-      (c) => c.rarity.toLowerCase() === rarezaSeleccionada
-    );
-    const premio =
-      posibles[Math.floor(Math.random() * posibles.length)] || cartas[0];
-    setRecompensa(premio);
-
-
-    const coleccionActual = JSON.parse(
-      localStorage.getItem("coleccionClashdle") || "[]"
-    );
-
-
-    const yaExiste = coleccionActual.some((c: Card) => c.id === premio.id);
-    if (!yaExiste) {
-      const nuevaColeccion = [...coleccionActual, premio];
-      localStorage.setItem("coleccionClashdle", JSON.stringify(nuevaColeccion));
+  for (const [rareza, prob] of Object.entries(probabilidades)) {
+    acumulado += prob;
+    if (tirada <= acumulado) {
+      rarezaSeleccionada = rareza;
+      break;
     }
   }
 
+  const coleccionActual = JSON.parse(
+    localStorage.getItem("coleccionClashdle") || "[]"
+  );
+
+  const posibles = cartas.filter(
+    (c) =>
+      c.rarity.toLowerCase() === rarezaSeleccionada &&
+      !coleccionActual.some((col: Card) => col.id === c.id)
+  );
+
+  if (posibles.length === 0) {
+    alert("¡Ya tenés todas las cartas de esta rareza!");
+    return;
+  }
+
+  const premio = posibles[Math.floor(Math.random() * posibles.length)];
+  setRecompensa(premio);
+
+  const nuevaColeccion = [...coleccionActual, premio];
+  localStorage.setItem("coleccionClashdle", JSON.stringify(nuevaColeccion));
+}
 
   function colorCelda(valor: any, valorSecreto: any) {
     return valor === valorSecreto ? "match" : "no-match";
