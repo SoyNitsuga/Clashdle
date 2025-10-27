@@ -29,7 +29,11 @@ const LoginPage: React.FC = () => {
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("username", data.username);
-      navigate("/game");
+
+      // 🔁 Redirigir a la página donde estaba el usuario
+      const redirectPath = localStorage.getItem("redirectAfterAuth") || "/game";
+      localStorage.removeItem("redirectAfterAuth");
+      navigate(redirectPath);
     } catch (err) {
       setError("Error de conexión con el servidor");
     }

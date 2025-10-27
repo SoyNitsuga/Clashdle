@@ -126,11 +126,6 @@ body,
   transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.fila:hover {
-  transform: translateY(-2px);
-  background: rgba(0, 0, 0, 0.65);
-}
-
 .fila.encabezado {
   background: linear-gradient(90deg, #1e3a8a, #3b82f6);
   color: #ffd700;
@@ -326,12 +321,10 @@ body,
 
 .flecha.up {
   color: #00ff00;
-  /* verde */
 }
 
 .flecha.down {
   color: #ff5555;
-  /* rojo */
 }
 
 .botonera-recompensa {

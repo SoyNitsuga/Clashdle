@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import "./CollectionPage.css";
 import type { Card } from "../components/CardTable";
 import { useNavigate } from "react-router-dom";
+import LoginButton from "../components/LoginButton";
+import RegisterButton from "../components/RegisterButton";
+import LogoutButton from "../components/LogoutButton";
 
 const API_URL = "http://localhost:4000/api/user";
 
@@ -89,6 +92,22 @@ const CollectionPage: React.FC = () => {
         </div>
       ))}
 
+      <div className="auth-buttons">
+        {!localStorage.getItem("token") ? (
+          <>
+            <LoginButton />
+            <RegisterButton />
+          </>
+        ) : (
+          <LogoutButton
+            onLogout={() => {
+              localStorage.removeItem("token");
+              window.location.reload();
+            }}
+          />
+        )}
+      </div>
+
       {cartaSeleccionada && (
         <div
           className="modal-overlay"
@@ -101,13 +120,28 @@ const CollectionPage: React.FC = () => {
               className="modal-img"
             />
             <h3>{cartaSeleccionada.name}</h3>
-            <p><b>Rareza:</b> {cartaSeleccionada.rarity}</p>
-            <p><b>Tipo:</b> {cartaSeleccionada.type}</p>
-            <p><b>Género:</b> {cartaSeleccionada.gender}</p>
-            <p><b>Elixir:</b> {cartaSeleccionada.elixir}</p>
-            <p><b>Arena:</b> {cartaSeleccionada.arena}</p>
-            <p><b>Rango:</b> {cartaSeleccionada.range}</p>
-            <button className="cerrar-btn" onClick={() => setCartaSeleccionada(null)}>
+            <p>
+              <b>Rareza:</b> {cartaSeleccionada.rarity}
+            </p>
+            <p>
+              <b>Tipo:</b> {cartaSeleccionada.type}
+            </p>
+            <p>
+              <b>Género:</b> {cartaSeleccionada.gender}
+            </p>
+            <p>
+              <b>Elixir:</b> {cartaSeleccionada.elixir}
+            </p>
+            <p>
+              <b>Arena:</b> {cartaSeleccionada.arena}
+            </p>
+            <p>
+              <b>Rango:</b> {cartaSeleccionada.range}
+            </p>
+            <button
+              className="cerrar-btn"
+              onClick={() => setCartaSeleccionada(null)}
+            >
               Cerrar
             </button>
           </div>

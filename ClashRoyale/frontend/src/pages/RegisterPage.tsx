@@ -28,6 +28,7 @@ const RegisterPage: React.FC = () => {
       }
 
       alert("✅ Registro exitoso. Ahora iniciá sesión.");
+      // 🔁 Redirigir al login pero conservando la ruta original
       navigate("/login");
     } catch (err) {
       setError("Error de conexión con el servidor");

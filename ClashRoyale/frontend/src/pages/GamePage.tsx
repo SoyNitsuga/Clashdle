@@ -4,6 +4,9 @@ import "./GamePage.css";
 import confetti from "canvas-confetti";
 import CardTable from "../components/CardTable";
 import type { Card } from "../components/CardTable";
+import LoginButton from "../components/LoginButton";
+import RegisterButton from "../components/RegisterButton";
+import LogoutButton from "../components/LogoutButton";
 
 function normalizarTexto(texto: string) {
   return texto
@@ -178,7 +181,7 @@ export default function GamePage() {
   }
 
   function compararValor(valor: any, valorSecreto: any, tipo: string) {
-    if (valor === valorSecreto) return <span className="flecha">✅</span>;
+    if (valor === valorSecreto) return null;
 
     let isDown = false;
 
@@ -333,6 +336,22 @@ export default function GamePage() {
           <div className="celda">Lanzamiento</div>
           <div className="celda">Arena</div>
           <div className="celda">Rango</div>
+        </div>
+
+        <div className="auth-buttons">
+          {!localStorage.getItem("token") ? (
+            <>
+              <LoginButton />
+              <RegisterButton />
+            </>
+          ) : (
+            <LogoutButton
+              onLogout={() => {
+                localStorage.removeItem("token");
+                window.location.reload();
+              }}
+            />
+          )}
         </div>
 
         {intentos.map((carta, index) => (
