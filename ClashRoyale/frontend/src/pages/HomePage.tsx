@@ -23,6 +23,49 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="home-container">
+      {/* Imágenes laterales superpuestas */}
+      <div className="lateral-images-left">
+        <img
+          src="/src/assets/fotos/Barbaro.png"
+          alt="Barbaro"
+          className="img-left img1"
+        />
+        <img
+          src="/src/assets/fotos/Principe.png"
+          alt="Principe"
+          className="img-left img2"
+        />
+        <img
+          src="/src/assets/fotos/Bruja.png"
+          alt="Bruja"
+          className="img-left img3"
+        />
+      </div>
+
+      <div className="lateral-images-right">
+        <img
+          src="/src/assets/fotos/Baby Dragon.png"
+          alt="Baby Dragon"
+          className="img-right img1"
+        />
+        <img
+          src="/src/assets/fotos/Arqueras.png"
+          alt="Arqueras"
+          className="img-right img2"
+        />
+        <img
+          src="/src/assets/fotos/Esqueleto.png"
+          alt="Esqueleto"
+          className="img-right img3"
+        />
+        <img
+          src="/src/assets/fotos/Mago.png"
+          alt="Mago"
+          className="img-right img4"
+        />
+      </div>
+
+      {/* Botones de login/register/logout */}
       <div className="auth-buttons">
         {loggedIn ? (
           <LogoutButton onLogout={handleLogout} />
@@ -34,6 +77,7 @@ const HomePage: React.FC = () => {
         )}
       </div>
 
+      {/* Logo */}
       <img
         src="/src/assets/fotos/Titulo.png"
         alt="Logo del Juego"
@@ -42,6 +86,7 @@ const HomePage: React.FC = () => {
         onClick={() => window.location.reload()}
       />
 
+      {/* Botones de juego y coleccion */}
       <div className="home-buttons">
         <GameButton />
         <CollectionButton />

@@ -108,7 +108,7 @@ body,
 }
 
 .home-button.logout {
-  background-color: #cc0000;
+  background-color: #006eff;
 }
 
 .home-button.logout:hover {
@@ -116,6 +116,78 @@ body,
   transform: scale(1.05);
 }
 
+.lateral-images-left,
+.lateral-images-right {
+  position: fixed;
+  top: 200px;
+  bottom: 10px;
+  width: 470px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 5px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.lateral-images-left {
+  left: 0;
+}
+.lateral-images-right {
+  right: 0;
+}
+
+.lateral-images-left img,
+.lateral-images-right img {
+  width: 175px;
+  height: auto;
+  object-fit: contain;
+  transform: rotate(-5deg);
+  animation: float 6s ease-in-out infinite alternate;
+}
+
+.img-left.img1 {
+  margin-top: 0;
+  transform: rotate(-3deg);
+}
+.img-left.img2 {
+  margin-top: -40px;
+  transform: rotate(2deg);
+}
+.img-left.img3 {
+  margin-top: -40px;
+  transform: rotate(-6deg);
+}
+
+.img-right.img1 {
+  margin-top: 0;
+  transform: rotate(4deg);
+}
+.img-right.img2 {
+  margin-top: -60px;
+  transform: rotate(-2deg);
+}
+.img-right.img3 {
+  margin-top: -50px;
+  transform: rotate(5deg);
+}
+.img-right.img4 {
+  margin-top: -50px;
+  transform: rotate(-4deg);
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
 
 @keyframes bounceIn {
   0% {
