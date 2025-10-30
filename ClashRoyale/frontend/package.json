@@ -26,6 +26,7 @@
     "vite": "^7.1.11"
   },
   "dependencies": {
+    "@netlify/neon": "^0.1.0",
     "axios": "^1.12.2",
     "canvas-confetti": "^1.9.3",
     "mysql2": "^3.15.3",
