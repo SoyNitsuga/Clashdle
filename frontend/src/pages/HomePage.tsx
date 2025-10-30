@@ -23,7 +23,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="home-container">
-      {/* Imágenes laterales superpuestas */}
+      {}
       <div className="lateral-images-left">
         <img
           src="/fotos/Barbaro.png"
@@ -65,7 +65,7 @@ const HomePage: React.FC = () => {
         />
       </div>
 
-      {/* Botones de login/register/logout */}
+      {}
       <div className="auth-buttons">
         {loggedIn ? (
           <LogoutButton onLogout={handleLogout} />
@@ -86,7 +86,7 @@ const HomePage: React.FC = () => {
         onClick={() => window.location.reload()}
       />
 
-      {/* Botones de juego y coleccion */}
+      {}
       <div className="home-buttons">
         <GameButton />
         <CollectionButton />

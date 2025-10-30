@@ -131,7 +131,7 @@ export default function GamePage() {
 
     if (token) {
       try {
-        const res = await fetch("http://localhost:4000/api/user/load", {
+        const res = await fetch("https://backend-7mmg.onrender.com/api/user/load", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -159,7 +159,7 @@ export default function GamePage() {
 
     if (token) {
       try {
-        await fetch("http://localhost:4000/api/user/save", {
+        await fetch("https://backend-7mmg.onrender.com/api/user/save", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -221,7 +221,7 @@ export default function GamePage() {
   return (
     <div className="game-container">
       <img
-        src="/src/assets/fotos/Titulo.png"
+        src="/fotos/Titulo.png"
         alt="Logo del Juego"
         className="titulo-imagen"
         onClick={() => (window.location.href = "/")}
@@ -275,7 +275,7 @@ export default function GamePage() {
             {Array.from({ length: cofreEstrellas }).map((_, i) => (
               <img
                 key={i}
-                src="../src/assets/fotos/Estrellas.png"
+                src="./fotos/Estrellas.png"
                 alt="Estrella"
                 className="estrella-icon"
               />
@@ -284,7 +284,7 @@ export default function GamePage() {
 
           <div className="cofre-container" onClick={abrirCofre}>
             <img
-              src="../src/assets/fotos/Cofre.png"
+              src="./fotos/Cofre.png"
               alt="Cofre"
               className="cofre-img"
             />

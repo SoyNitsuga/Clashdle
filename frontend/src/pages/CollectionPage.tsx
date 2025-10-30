@@ -6,7 +6,7 @@ import LoginButton from "../components/LoginButton";
 import RegisterButton from "../components/RegisterButton";
 import LogoutButton from "../components/LogoutButton";
 
-const API_URL = "http://localhost:4000/api/user";
+const API_URL = "https://backend-7mmg.onrender.com/api/user";
 
 const CollectionPage: React.FC = () => {
   const [coleccion, setColeccion] = useState<Card[]>([]);
@@ -55,7 +55,7 @@ const CollectionPage: React.FC = () => {
   return (
     <div className="collection-container">
       <img
-        src="/src/assets/fotos/Titulo.png"
+        src="/fotos/Titulo.png"
         alt="Logo"
         className="titulo-imagen"
         onClick={() => navigate("/")}

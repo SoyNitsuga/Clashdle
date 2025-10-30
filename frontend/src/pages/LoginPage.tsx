@@ -41,7 +41,7 @@ const LoginPage: React.FC = () => {
   return (
     <div className="auth-container">
       <img
-        src="/src/assets/fotos/Titulo.png"
+        src="/fotos/Titulo.png"
         alt="Logo del Juego"
         className="titulo-imagen"
         onClick={() => navigate("/")}
