@@ -30,7 +30,6 @@ const LoginPage: React.FC = () => {
       localStorage.setItem("token", data.token);
       localStorage.setItem("username", data.username);
 
-      // 🔁 Redirigir a la página donde estaba el usuario
       const redirectPath = localStorage.getItem("redirectAfterAuth") || "/game";
       localStorage.removeItem("redirectAfterAuth");
       navigate(redirectPath);

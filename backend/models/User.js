@@ -13,13 +13,11 @@ export async function createUser(username, password) {
   return user;
 }
 
-// Buscar usuario por username
 export async function findUserByUsername(username) {
   const [user] = await sql`SELECT * FROM users WHERE username = ${username}`;
   return user || null;
 }
 
-// Validar usuario
 export async function validateUser(username, password) {
   const user = await findUserByUsername(username);
   if (!user) return null;
