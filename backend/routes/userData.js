@@ -18,16 +18,16 @@ function authMiddleware(req, res, next) {
 }
 
 router.post("/save", authMiddleware, async (req, res) => {
-  const { collection } = req.body;
+  const { userCollection } = req.body;
   const user = await User.findById(req.userId);
-  user.collection = collection;
+  user.userCollection = userCollection;
   await user.save();
   res.json({ message: "Colección guardada" });
 });
 
 router.get("/load", authMiddleware, async (req, res) => {
   const user = await User.findById(req.userId);
-  res.json({ collection: user.collection });
+  res.json({ userCollection: user.userCollection });
 });
 
 export default router;

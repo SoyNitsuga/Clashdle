@@ -22,7 +22,7 @@ const CollectionPage: React.FC = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
-        if (data.collection) setColeccion(data.collection);
+        if (data.userCollection) setColeccion(data.userCollection);
       } catch (err) {
         console.error("Error al cargar colección:", err);
       }
@@ -39,7 +39,7 @@ const CollectionPage: React.FC = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ collection: [] }),
+        body: JSON.stringify({ userCollection: [] }),
       });
     }
   };

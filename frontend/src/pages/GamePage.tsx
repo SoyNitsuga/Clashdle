@@ -135,7 +135,7 @@ export default function GamePage() {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
-        coleccionActual = data.collection || [];
+        coleccionActual = data.userCollection || [];
       } catch (e) {
         console.error("Error cargando colección:", e);
       }
@@ -165,7 +165,7 @@ export default function GamePage() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ collection: nuevaColeccion }),
+          body: JSON.stringify({ userCollection: nuevaColeccion }),
         });
         console.log("✅ Carta guardada en el servidor");
       } catch (e) {
@@ -302,8 +302,8 @@ export default function GamePage() {
 
           <div className="botonera-recompensa">
             <button
-              className="go-to-collection-button"
-              onClick={() => navigate("/collection")}
+              className="go-to-userCollection-button"
+              onClick={() => navigate("/userCollection")}
             >
               📜 Ir al Coleccionario
             </button>
