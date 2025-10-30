@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AuthPages.css";
 
-const API_URL = "http://localhost:4000/api/auth/login";
+const API_URL = "https://backend-7mmg.onrender.com";
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState("");
