@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AuthPages.css";
 
-const API_URL = "https://backend-7mmg.onrender.com/api/auth";
+const API_URL = "https://backend-7mmg.onrender.com/api/auth/login";
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -15,7 +15,7 @@ const LoginPage: React.FC = () => {
     setError("");
 
     try {
-      const res = await fetch(API_URL, {
+      const res = await fetch(API_URL,  {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
