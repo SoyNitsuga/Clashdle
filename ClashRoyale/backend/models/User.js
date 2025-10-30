@@ -1,9 +1,31 @@
-import mongoose from "mongoose";
+import { sql } from "../db.js";
+import bcrypt from "bcryptjs";
 
-const userSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  collection: { type: Array, default: [] },
-});
+// Crear usuario
+export async function createUser(username, password) {
+  const hashed = await bcrypt.hash(password, 10);
 
-export default mongoose.model("User", userSchema);
+  const [user] = await sql`
+    INSERT INTO users (username, password)
+    VALUES (${username}, ${hashed})
+    RETURNING id, username, created_at;
+  `;
+  return user;
+}
+
+// Buscar usuario por username
+export async function findUserByUsername(username) {
+  const [user] = await sql`SELECT * FROM users WHERE username = ${username}`;
+  return user || null;
+}
+
+// Validar usuario
+export async function validateUser(username, password) {
+  const user = await findUserByUsername(username);
+  if (!user) return null;
+
+  const valid = await bcrypt.compare(password, user.password);
+  if (!valid) return null;
+
+  return { id: user.id, username: user.username };
+}
