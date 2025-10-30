@@ -15,8 +15,8 @@ mongoose
     console.error("❌ Error al conectar con MongoDB:", err.message);
     process.exit(1);
   });
-app.use("/api/auth", authRoutes);
-app.use("/api/userData", userDataRoutes);
+app.use("/routes/auth", authRoutes);
+app.use("/routes/userData", userDataRoutes);
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en puerto ${PORT}`);
