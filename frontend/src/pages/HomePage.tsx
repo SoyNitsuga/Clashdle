@@ -26,17 +26,17 @@ const HomePage: React.FC = () => {
       {/* Imágenes laterales superpuestas */}
       <div className="lateral-images-left">
         <img
-          src="/src/assets/fotos/Barbaro.png"
+          src="./src/assets/fotos/Barbaro.png"
           alt="Barbaro"
           className="img-left img1"
         />
         <img
-          src="/src/assets/fotos/Principe.png"
+          src="./src/assets/fotos/Principe.png"
           alt="Principe"
           className="img-left img2"
         />
         <img
-          src="/src/assets/fotos/Bruja.png"
+          src="./src/assets/fotos/Bruja.png"
           alt="Bruja"
           className="img-left img3"
         />
@@ -44,22 +44,22 @@ const HomePage: React.FC = () => {
 
       <div className="lateral-images-right">
         <img
-          src="/src/assets/fotos/Baby Dragon.png"
+          src="./src/assets/fotos/Baby Dragon.png"
           alt="Baby Dragon"
           className="img-right img1"
         />
         <img
-          src="/src/assets/fotos/Arqueras.png"
+          src="./src/assets/fotos/Arqueras.png"
           alt="Arqueras"
           className="img-right img2"
         />
         <img
-          src="/src/assets/fotos/Esqueleto.png"
+          src="./src/assets/fotos/Esqueleto.png"
           alt="Esqueleto"
           className="img-right img3"
         />
         <img
-          src="/src/assets/fotos/Mago.png"
+          src="./src/assets/fotos/Mago.png"
           alt="Mago"
           className="img-right img4"
         />
