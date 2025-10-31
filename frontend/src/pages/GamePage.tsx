@@ -302,8 +302,8 @@ export default function GamePage() {
 
           <div className="botonera-recompensa">
             <button
-              className="go-to-userCollection-button"
-              onClick={() => navigate("/userCollection")}
+              className="go-to-Collection-button"
+              onClick={() => navigate("/Collection")}
             >
               📜 Ir al Coleccionario
             </button>
