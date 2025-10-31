@@ -105,7 +105,6 @@ export default function GamePage() {
     if (!cofreEstrellas || cartas.length === 0) return;
 
     const estrellas = cofreEstrellas;
-
     const probabilidades: Record<string, number> = {
       common: Math.max(50 - estrellas * 5, 10),
       rare: Math.max(30 - (5 - estrellas) * 3, 10),
@@ -131,14 +130,30 @@ export default function GamePage() {
 
     if (token) {
       try {
-        const res = await fetch("https://backend-7mmg.onrender.com/api/user/load", {
-          method: "GET",
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await fetch(
+          "https://backend-7mmg.onrender.com/api/user/load",
+          {
+            method: "GET",
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        if (!res.ok)
+          throw new Error("No se pudo cargar la colección del usuario");
         const data = await res.json();
-        coleccionActual = data.userCollection || [];
+
+        coleccionActual = Array.isArray(data.userCollection)
+          ? data.userCollection
+          : [];
       } catch (e) {
-        console.error("Error cargando colección:", e);
+        console.error("⚠️ Error cargando colección:", e);
+      }
+    } else {
+      try {
+        const local = localStorage.getItem("coleccionClashdle");
+        coleccionActual = local ? JSON.parse(local) : [];
+      } catch {
+        coleccionActual = [];
       }
     }
 
@@ -160,20 +175,30 @@ export default function GamePage() {
 
     if (token) {
       try {
-        await fetch("https://backend-7mmg.onrender.com/api/user/save", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ userCollection: nuevaColeccion }),
-        });
+        const res = await fetch(
+          "https://backend-7mmg.onrender.com/api/user/save",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ userCollection: nuevaColeccion }),
+          }
+        );
+
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(data.error || "Error al guardar en servidor");
+        }
+
         console.log("✅ Carta guardada en el servidor");
       } catch (e) {
-        console.error("Error guardando en servidor:", e);
+        console.error("❌ Error guardando en servidor:", e);
       }
     } else {
       localStorage.setItem("coleccionClashdle", JSON.stringify(nuevaColeccion));
+      console.log("💾 Carta guardada localmente");
     }
   }
 
@@ -284,11 +309,7 @@ export default function GamePage() {
           </div>
 
           <div className="cofre-container" onClick={abrirCofre}>
-            <img
-              src="./fotos/Cofre.png"
-              alt="Cofre"
-              className="cofre-img"
-            />
+            <img src="./fotos/Cofre.png" alt="Cofre" className="cofre-img" />
           </div>
         </div>
       )}
