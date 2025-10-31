@@ -1,4 +1,3 @@
-// src/components/CardTable.tsx
 import { useEffect } from "react";
 
 export interface Card {
