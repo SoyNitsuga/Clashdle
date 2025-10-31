@@ -160,7 +160,7 @@ export default function GamePage() {
     if (token) {
       try {
         await fetch("https://backend-7mmg.onrender.com/api/user/save", {
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
