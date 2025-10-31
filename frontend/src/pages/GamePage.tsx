@@ -131,7 +131,7 @@ export default function GamePage() {
 
     if (token) {
       try {
-        const res = await fetch("https://backend-7mmg.onrender.com/routes/userData", {
+        const res = await fetch("https://backend-7mmg.onrender.com/routes/userData/load", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -159,7 +159,7 @@ export default function GamePage() {
 
     if (token) {
       try {
-        await fetch("https://backend-7mmg.onrender.com/routes/userData", {
+        await fetch("https://backend-7mmg.onrender.com/routes/userData/save", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
