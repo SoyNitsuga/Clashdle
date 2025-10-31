@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AuthPages.css";
 
-const API_URL = "https://backend-7mmg.onrender.com/api/user/save";
+const API_URL = "https://backend-7mmg.onrender.com/api/auth/register";
 
 const RegisterPage: React.FC = () => {
   const [username, setUsername] = useState("");
