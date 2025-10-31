@@ -53,14 +53,14 @@ const CollectionPage: React.FC = () => {
   };
 
   return (
-    <div className="collection-container">
+    <div className="userCollection-container">
       <img
         src="/fotos/Titulo.png"
         alt="Logo"
         className="titulo-imagen"
         onClick={() => navigate("/")}
       />
-      <h1 className="collection-title">Tu Coleccionario</h1>
+      <h1 className="userCollection-title">Tu Coleccionario</h1>
 
       <div className="botonera-coleccion">
         <button className="volver-btn" onClick={() => navigate("/game")}>

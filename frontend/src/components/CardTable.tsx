@@ -15,7 +15,7 @@ export interface Card {
 }
 
 interface CardTableProps {
-  setCartas: (cards: Card[]) => void; // Pasamos las cartas al GamePage
+  setCartas: (cards: Card[]) => void;
 }
 
 const CardTable: React.FC<CardTableProps> = ({ setCartas }) => {
@@ -40,7 +40,7 @@ const CardTable: React.FC<CardTableProps> = ({ setCartas }) => {
       .catch((err) => console.error(err));
   }, [setCartas]);
 
-  return null; // No renderiza nada, solo carga las cartas
+  return null;
 };
 
 export default CardTable;
