@@ -159,7 +159,7 @@ export default function GamePage() {
 
     if (token) {
       try {
-        await fetch("https://backend-7mmg.onrender.com/routes/auth", {
+        await fetch("https://backend-7mmg.onrender.com/routes/userData", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
