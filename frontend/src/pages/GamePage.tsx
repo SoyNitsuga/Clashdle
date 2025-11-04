@@ -101,103 +101,145 @@ export default function GamePage() {
     }
   }
 
-async function abrirCofre() {
-  if (!cofreEstrellas || cartas.length === 0) return;
+  async function abrirCofre() {
+    if (!cofreEstrellas || cartas.length === 0) return;
 
-  const estrellas = cofreEstrellas;
+    const estrellas = cofreEstrellas;
 
-  // Probabilidades basadas en la tabla proporcionada
-  const tablaProbabilidades: Record<number, Record<string, number>> = {
-    1: { common: 61.31, rare: 17.02, epic: 15.65, legendary: 4.3, champion: 1.72 },
-    2: { common: 47.95, rare: 21.88, epic: 18.08, legendary: 6.2, champion: 5.89 },
-    3: { common: 33.33, rare: 24.63, epic: 21.44, legendary: 13.21, champion: 7.39 },
-    4: { common: 26.26, rare: 25.0, epic: 23.14, legendary: 16.18, champion: 9.42 },
-    5: { common: 23.68, rare: 22.56, epic: 19.35, legendary: 18.82, champion: 15.59 },
-  };
+    const tablaProbabilidades = {
+      1: {
+        common: 61.31,
+        rare: 17.02,
+        epic: 15.65,
+        legendary: 4.3,
+        champion: 1.72,
+      },
+      2: {
+        common: 47.95,
+        rare: 21.88,
+        epic: 18.08,
+        legendary: 6.2,
+        champion: 5.89,
+      },
+      3: {
+        common: 33.33,
+        rare: 24.63,
+        epic: 21.44,
+        legendary: 13.21,
+        champion: 7.39,
+      },
+      4: {
+        common: 26.26,
+        rare: 25.0,
+        epic: 23.14,
+        legendary: 16.18,
+        champion: 9.42,
+      },
+      5: {
+        common: 23.68,
+        rare: 22.56,
+        epic: 19.35,
+        legendary: 18.82,
+        champion: 15.59,
+      },
+    };
 
-  const probabilidades = tablaProbabilidades[estrellas] || tablaProbabilidades[1];
+    const probabilidades =
+      tablaProbabilidades[estrellas] || tablaProbabilidades[1];
+    const ordenRarezas = ["common", "rare", "epic", "legendary", "champion"];
 
-  // Determinar rareza según tirada aleatoria
-  const tirada = Math.random() * 100;
-  let acumulado = 0;
-  let rarezaSeleccionada = "common";
+    const tirada = Math.random() * 100;
+    let acumulado = 0;
+    let rarezaSeleccionada = "common";
 
-  for (const [rareza, prob] of Object.entries(probabilidades)) {
-    acumulado += prob;
-    if (tirada <= acumulado) {
-      rarezaSeleccionada = rareza;
-      break;
-    }
-  }
-
-  const token = localStorage.getItem("token");
-  let coleccionActual: Card[] = [];
-
-  if (token) {
-    try {
-      const res = await fetch("https://backend-7mmg.onrender.com/api/user/load", {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (!res.ok) throw new Error("No se pudo cargar la colección del usuario");
-      const data = await res.json();
-
-      coleccionActual = Array.isArray(data.userCollection) ? data.userCollection : [];
-    } catch (e) {
-      console.error("⚠️ Error cargando colección:", e);
-    }
-  } else {
-    try {
-      const local = localStorage.getItem("coleccionClashdle");
-      coleccionActual = local ? JSON.parse(local) : [];
-    } catch {
-      coleccionActual = [];
-    }
-  }
-
-  const posibles = cartas.filter(
-    (c) =>
-      c.rarity.toLowerCase() === rarezaSeleccionada &&
-      !coleccionActual.some((col: Card) => col.id === c.id)
-  );
-
-  if (posibles.length === 0) {
-    alert("¡Ya tenés todas las cartas de esta rareza!");
-    return;
-  }
-
-  const premio = posibles[Math.floor(Math.random() * posibles.length)];
-  setRecompensa(premio);
-
-  const nuevaColeccion = [...coleccionActual, premio];
-
-  if (token) {
-    try {
-      const res = await fetch("https://backend-7mmg.onrender.com/api/user/save", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ userCollection: nuevaColeccion }),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "Error al guardar en servidor");
+    for (const rareza of ordenRarezas) {
+      const prob = probabilidades[rareza];
+      if (!prob) continue;
+      acumulado += prob;
+      if (tirada <= acumulado) {
+        rarezaSeleccionada = rareza;
+        break;
       }
-
-      console.log("✅ Carta guardada en el servidor");
-    } catch (e) {
-      console.error("❌ Error guardando en servidor:", e);
     }
-  } else {
-    localStorage.setItem("coleccionClashdle", JSON.stringify(nuevaColeccion));
-    console.log("💾 Carta guardada localmente");
-  }
-}
 
+    const token = localStorage.getItem("token");
+    let coleccionActual = [];
+
+    if (token) {
+      try {
+        const res = await fetch(
+          "https://backend-7mmg.onrender.com/api/user/load",
+          {
+            method: "GET",
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        if (!res.ok)
+          throw new Error("No se pudo cargar la colección del usuario");
+        const data = await res.json();
+
+        coleccionActual = Array.isArray(data.userCollection)
+          ? data.userCollection
+          : [];
+      } catch (e) {
+        console.error("⚠️ Error cargando colección:", e);
+      }
+    } else {
+      try {
+        const local = localStorage.getItem("coleccionClashdle");
+        coleccionActual = local ? JSON.parse(local) : [];
+      } catch {
+        coleccionActual = [];
+      }
+    }
+
+    const posibles = cartas.filter(
+      (c) =>
+        c.rarity.toLowerCase() === rarezaSeleccionada &&
+        !coleccionActual.some((col) => col.id === c.id)
+    );
+
+    if (posibles.length === 0) {
+      alert(
+        `¡Ya tenés todas las cartas de rareza ${rarezaSeleccionada.toUpperCase()}!`
+      );
+      return;
+    }
+
+    const premio = posibles[Math.floor(Math.random() * posibles.length)];
+    setRecompensa(premio);
+
+    const nuevaColeccion = [...coleccionActual, premio];
+
+    if (token) {
+      try {
+        const res = await fetch(
+          "https://backend-7mmg.onrender.com/api/user/save",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ userCollection: nuevaColeccion }),
+          }
+        );
+
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(data.error || "Error al guardar en servidor");
+        }
+
+        console.log("✅ Carta guardada en el servidor");
+      } catch (e) {
+        console.error("❌ Error guardando en servidor:", e);
+      }
+    } else {
+      localStorage.setItem("coleccionClashdle", JSON.stringify(nuevaColeccion));
+      console.log("💾 Carta guardada localmente");
+    }
+  }
 
   function colorCelda(valor: any, valorSecreto: any) {
     return valor === valorSecreto ? "match" : "no-match";
