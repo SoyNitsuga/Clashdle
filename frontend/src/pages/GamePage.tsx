@@ -108,11 +108,11 @@ async function abrirCofre() {
 
   // Probabilidades basadas en la tabla proporcionada
   const tablaProbabilidades: Record<number, Record<string, number>> = {
-    1: { common: 61.31, special: 17.02, epic: 15.65, legendary: 4.3, champion: 1.72 },
-    2: { common: 47.95, special: 21.88, epic: 18.08, legendary: 6.2, champion: 5.89 },
-    3: { common: 33.33, special: 24.63, epic: 21.44, legendary: 13.21, champion: 7.39 },
-    4: { common: 26.26, special: 25.0, epic: 23.14, legendary: 16.18, champion: 9.42 },
-    5: { common: 23.68, special: 22.56, epic: 19.35, legendary: 18.82, champion: 15.59 },
+    1: { common: 61.31, rare: 17.02, epic: 15.65, legendary: 4.3, champion: 1.72 },
+    2: { common: 47.95, rare: 21.88, epic: 18.08, legendary: 6.2, champion: 5.89 },
+    3: { common: 33.33, rare: 24.63, epic: 21.44, legendary: 13.21, champion: 7.39 },
+    4: { common: 26.26, rare: 25.0, epic: 23.14, legendary: 16.18, champion: 9.42 },
+    5: { common: 23.68, rare: 22.56, epic: 19.35, legendary: 18.82, champion: 15.59 },
   };
 
   const probabilidades = tablaProbabilidades[estrellas] || tablaProbabilidades[1];
